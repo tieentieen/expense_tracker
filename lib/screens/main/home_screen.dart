@@ -11,7 +11,6 @@ import 'package:expense_tracker/screens/main/profile_screen.dart';
 import 'package:expense_tracker/screens/main/report_screen.dart';
 import 'package:expense_tracker/theme/app_colors.dart';
 import 'package:expense_tracker/utils/formatters.dart';
-import 'package:expense_tracker/screens/main/report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final int userId;
@@ -58,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final authProvider = Provider.of<AuthProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     
+
     final List<Widget> screens = [
       _buildHomeTab(transactionProvider, authProvider, themeProvider),
       ReportScreen(userId: widget.userId),
