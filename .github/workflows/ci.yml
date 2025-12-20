@@ -1,0 +1,142 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        flutter-version: '3.35.2'
+    
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Analyze code
+      run: flutter analyze
+    
+    - name: Run unit tests
+      run: flutter test test/unit/
+    
+    - name: Run widget tests
+      run: flutter test test/widget/
+    
+    - name: Generate test coverage
+      run: |
+        flutter test --coverage
+        genhtml coverage/lcov.info -o coverage/html
+    
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: coverage/html/
+    
+    - name: Check formatting
+      run: flutter format --set-exit-if-changed .
+    
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        flutter-version: '3.35.2'
+    
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Verify Android build
+      run: |
+        flutter build apk --debug
+        echo "Android build successful"
+    
+    - name: Verify Web build
+      run: |
+        flutter build web --release
+        echo "Web build successful"
+    
+    - name: Create release artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: |
+          build/app/outputs/flutter-apk/
+          build/web/
+    
+  quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        flutter-version: '3.35.2'
+    
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Run Dart Code Metrics
+      run: |
+        dart pub global activate dart_code_metrics
+        dart pub global run dart_code_metrics:metrics analyze lib
+        dart pub global run dart_code_metrics:metrics check-unused-code lib
+        dart pub global run dart_code_metrics:metrics check-unused-files lib
+    
+    - name: Security analysis
+      run: |
+        flutter pub outdated --mode=null-safety
+        echo "Null safety check completed"
+    
+    - name: Check for deprecated APIs
+      run: flutter analyze --fatal-infos
+
+  deploy-demo:
+    needs: [test, build, quality]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        flutter-version: '3.35.2'
+    
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Build web for GitHub Pages
+      run: flutter build web --base-href /expense-tracker/ --release
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build/web
+        publish_branch: gh-pages
+        keep_files: true
