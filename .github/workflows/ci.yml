@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -18,24 +18,24 @@ jobs:
       uses: subosito/flutter-action@v2
       with:
         channel: 'stable'
-        flutter-version: '3.24.0'  
+        flutter-version: '3.24.0'
 
     - name: Install dependencies
       run: flutter pub get
 
+    - name: Generate mocks (Mockito + build_runner)
+      run: flutter pub run build_runner build --delete-conflicting-outputs
+
     - name: Analyze code
       run: flutter analyze
 
-    - name: Run unit tests
-      run: flutter test test/unit/
+    - name: Run all tests
+      run: flutter test
 
-    - name: Run widget tests
-      run: flutter test test/widget/
-
-    - name: Generate test coverage
+    - name: Generate coverage report
       run: flutter test --coverage
 
-    - name: Upload coverage
+    - name: Upload coverage artifact
       if: always()
       uses: actions/upload-artifact@v4
       with:
@@ -45,7 +45,7 @@ jobs:
 
   quality:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -59,16 +59,16 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
-    - name: Check format
-      run: dart format . --output=show  
+    - name: Check code format
+      run: dart format . --output=show --set-exit-if-changed
 
-    - name: Analyze code
+    - name: Analyze code (no fatal warnings)
       run: flutter analyze --no-fatal-warnings
 
   build:
     needs: [test, quality]
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -82,14 +82,14 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
-    - name: Build APK
+    - name: Build APK (release)
       run: flutter build apk --release
 
   deploy-demo:
     needs: [test, build, quality]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -103,7 +103,7 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
-    - name: Build web
+    - name: Build web app
       run: flutter build web --base-href /expense-tracker/ --release
 
     - name: Deploy to GitHub Pages
