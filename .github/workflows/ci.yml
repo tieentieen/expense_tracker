@@ -12,13 +12,13 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  
+      uses: actions/checkout@v4
 
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
         channel: 'stable'
-        flutter-version: '3.22.2'  
+        flutter-version: '3.22.2'
 
     - name: Install dependencies
       run: flutter pub get
@@ -33,16 +33,14 @@ jobs:
       run: flutter test test/widget/
 
     - name: Generate test coverage
-      run: |
-        flutter test --coverage
-        genhtml coverage/lcov.info -o coverage/html
+      run: flutter test --coverage
 
     - name: Upload coverage report
       if: always()
-      uses: actions/upload-artifact@v4  
+      uses: actions/upload-artifact@v4
       with:
         name: coverage-report
-        path: coverage/html
+        path: coverage/lcov.info
         retention-days: 7
 
   quality:
@@ -61,10 +59,10 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
-    - name: Format code (non-fatal)
+    - name: Check code format
       run: dart format . --output=show  
 
-    - name: Analyze code (non-fatal warnings)
+    - name: Analyze code
       run: flutter analyze --no-fatal-warnings  
 
   build:
@@ -109,7 +107,7 @@ jobs:
       run: flutter build web --base-href /expense-tracker/ --release
 
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4  
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build/web
