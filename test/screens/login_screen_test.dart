@@ -94,10 +94,8 @@ void main() {
       when(mockAuthProvider.login(
         email: anyNamed('email'),
         password: anyNamed('password'),
-      )).thenAnswer((_) async => {
-        'success': true,
-        'message': 'Đăng nhập thành công'
-      });
+      )).thenAnswer(
+          (_) async => {'success': true, 'message': 'Đăng nhập thành công'});
 
       await tester.pumpWidget(buildTestableWidget());
 
@@ -107,7 +105,7 @@ void main() {
       await tester.enterText(emailField, 'test@example.com');
       await tester.enterText(passwordField, '123456');
       await tester.tap(find.text('ĐĂNG NHẬP'));
-      
+
       // Đợi đủ thời gian để timer hoàn thành
       await tester.pumpAndSettle(const Duration(seconds: 2));
 
@@ -128,14 +126,14 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Quên mật khẩu'), findsOneWidget);
-      
+
       // Tìm TextFormField trong dialog (có label 'Email')
       final dialogTextFields = find.descendant(
         of: find.byType(AlertDialog),
         matching: find.byType(TextFormField),
       );
       expect(dialogTextFields, findsOneWidget);
-      
+
       expect(find.text('GỬI'), findsOneWidget);
     });
 
@@ -148,7 +146,7 @@ void main() {
         of: passwordField,
         matching: find.byIcon(Icons.visibility_outlined),
       );
-      
+
       await tester.tap(visibilityIcon);
       await tester.pump();
 
@@ -169,19 +167,18 @@ void main() {
       expect(checkboxWidget.value, true);
     });
 
-    testWidgets('disables login button when isLoading is true',
-        (tester) async {
+    testWidgets('disables login button when isLoading is true', (tester) async {
       when(mockAuthProvider.isLoading).thenReturn(true);
 
       await tester.pumpWidget(buildTestableWidget());
 
       // Kiểm tra có CircularProgressIndicator (loading) thay vì text button
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      
+
       // Tìm ElevatedButton và kiểm tra onPressed là null (disabled)
       final elevatedButtons = find.byType(ElevatedButton);
       expect(elevatedButtons, findsOneWidget);
-      
+
       final button = tester.widget<ElevatedButton>(elevatedButtons.first);
       expect(button.onPressed, isNull); // Button bị disabled
     });
@@ -190,10 +187,8 @@ void main() {
       when(mockAuthProvider.login(
         email: anyNamed('email'),
         password: anyNamed('password'),
-      )).thenAnswer((_) async => {
-        'success': false,
-        'message': 'Email hoặc mật khẩu không đúng'
-      });
+      )).thenAnswer((_) async =>
+          {'success': false, 'message': 'Email hoặc mật khẩu không đúng'});
 
       await tester.pumpWidget(buildTestableWidget());
 
@@ -208,23 +203,22 @@ void main() {
       // Kiểm tra Snackbar lỗi xuất hiện
       expect(find.text('Email hoặc mật khẩu không đúng'), findsOneWidget);
     });
-    
-    testWidgets('enables login button when isLoading is false',
-        (tester) async {
+
+    testWidgets('enables login button when isLoading is false', (tester) async {
       when(mockAuthProvider.isLoading).thenReturn(false);
 
       await tester.pumpWidget(buildTestableWidget());
 
       // Kiểm tra không có CircularProgressIndicator
       expect(find.byType(CircularProgressIndicator), findsNothing);
-      
+
       // Kiểm tra có text 'ĐĂNG NHẬP'
       expect(find.text('ĐĂNG NHẬP'), findsOneWidget);
-      
+
       // Tìm ElevatedButton và kiểm tra onPressed không null (enabled)
       final elevatedButtons = find.byType(ElevatedButton);
       expect(elevatedButtons, findsOneWidget);
-      
+
       final button = tester.widget<ElevatedButton>(elevatedButtons.first);
       expect(button.onPressed, isNotNull); // Button enabled
     });

@@ -43,7 +43,7 @@ void main() {
 
       // Đợi cho loadTheme hoàn thành trước
       await Future.delayed(const Duration(milliseconds: 100));
-      
+
       provider.addListener(listener);
       await provider.setThemeMode(ThemeMode.dark);
 
@@ -56,10 +56,10 @@ void main() {
 
     test('toggleTheme switches and saves', () async {
       final provider = ThemeProvider();
-      
+
       // Đợi cho loadTheme hoàn thành trước
       await Future.delayed(const Duration(milliseconds: 100));
-      
+
       // Lắng nghe từng lần toggle
       var callCount = 0;
       provider.addListener(() {
@@ -82,17 +82,17 @@ void main() {
 
     test('getTheme returns correct theme', () {
       final provider = ThemeProvider();
-      
+
       // Tạo mock BuildContext
       final mockContext = MockBuildContext();
-      
+
       // Ban đầu là light
       expect(provider.getTheme(mockContext).brightness, Brightness.light);
-      
+
       // Đổi sang dark
       provider.setThemeMode(ThemeMode.dark);
       expect(provider.getTheme(mockContext).brightness, Brightness.dark);
-      
+
       // Đổi lại light
       provider.setThemeMode(ThemeMode.light);
       expect(provider.getTheme(mockContext).brightness, Brightness.light);
@@ -103,45 +103,47 @@ void main() {
 // Mock BuildContext cho test
 class MockBuildContext implements BuildContext {
   @override
-  T dependOnInheritedWidgetOfExactType<T extends InheritedWidget>({Object? aspect}) {
+  T dependOnInheritedWidgetOfExactType<T extends InheritedWidget>(
+      {Object? aspect}) {
     throw UnimplementedError();
   }
-  
+
   @override
-  InheritedElement? getElementForInheritedWidgetOfExactType<T extends InheritedWidget>() {
+  InheritedElement?
+      getElementForInheritedWidgetOfExactType<T extends InheritedWidget>() {
     throw UnimplementedError();
   }
-  
+
   @override
   T? findAncestorWidgetOfExactType<T extends Widget>() {
     throw UnimplementedError();
   }
-  
+
   @override
   T? findRootAncestorStateOfType<T extends State<StatefulWidget>>() {
     throw UnimplementedError();
   }
-  
+
   @override
   T? findAncestorStateOfType<T extends State<StatefulWidget>>() {
     throw UnimplementedError();
   }
-  
+
   @override
   void visitAncestorElements(bool Function(Element element) visitor) {}
-  
+
   @override
   void visitChildElements(ElementVisitor visitor) {}
-  
+
   @override
   Widget get widget => Container();
-  
+
   @override
   BuildOwner? get owner => null;
-  
+
   @override
   Size? get size => null;
-  
+
   @override
   dynamic noSuchMethod(Invocation invocation) {
     return super.noSuchMethod(invocation);

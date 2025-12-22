@@ -6,7 +6,8 @@ import 'package:fl_chart/fl_chart.dart';
 
 void main() {
   group('IncomeExpenseBarChart Widget Tests', () {
-    testWidgets('renders empty chart when no data', (WidgetTester tester) async {
+    testWidgets('renders empty chart when no data',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -23,7 +24,8 @@ void main() {
       expect(find.byIcon(Icons.bar_chart_outlined), findsOneWidget);
     });
 
-    testWidgets('renders chart with income and expense data', (WidgetTester tester) async {
+    testWidgets('renders chart with income and expense data',
+        (WidgetTester tester) async {
       // Sửa: Tạo mảng 12 phần tử thay vì 1 phần tử
       final income = List.filled(12, 0.0);
       final expense = List.filled(12, 0.0);
@@ -49,7 +51,8 @@ void main() {
       expect(find.text('Chi tiêu'), findsOneWidget);
     });
 
-    testWidgets('shows legend when showLegend is true', (WidgetTester tester) async {
+    testWidgets('shows legend when showLegend is true',
+        (WidgetTester tester) async {
       // Sửa: Tạo mảng 12 phần tử
       final income = List.filled(12, 0.0);
       final expense = List.filled(12, 0.0);
@@ -72,7 +75,8 @@ void main() {
       expect(find.text('Chi tiêu'), findsOneWidget);
     });
 
-    testWidgets('hides legend when showLegend is false', (WidgetTester tester) async {
+    testWidgets('hides legend when showLegend is false',
+        (WidgetTester tester) async {
       // Sửa: Tạo mảng 12 phần tử
       final income = List.filled(12, 0.0);
       final expense = List.filled(12, 0.0);
@@ -95,7 +99,8 @@ void main() {
       expect(find.text('Chi tiêu'), findsNothing);
     });
 
-    testWidgets('SimpleBarChart renders correctly', (WidgetTester tester) async {
+    testWidgets('SimpleBarChart renders correctly',
+        (WidgetTester tester) async {
       // Sửa: Tạo mảng 12 phần tử
       final data = List.filled(12, 0.0);
       data[0] = 100000.0;
@@ -114,7 +119,8 @@ void main() {
       expect(find.byType(BarChart), findsOneWidget);
     });
 
-    testWidgets('SimpleBarChart shows empty state', (WidgetTester tester) async {
+    testWidgets('SimpleBarChart shows empty state',
+        (WidgetTester tester) async {
       final data = List.filled(12, 0.0);
 
       await tester.pumpWidget(
@@ -129,7 +135,8 @@ void main() {
       expect(find.byType(BarChart), findsNothing);
     });
 
-    testWidgets('handles year parameter correctly', (WidgetTester tester) async {
+    testWidgets('handles year parameter correctly',
+        (WidgetTester tester) async {
       // Sửa: Tạo mảng 12 phần tử
       final income = List.filled(12, 0.0);
       final expense = List.filled(12, 0.0);

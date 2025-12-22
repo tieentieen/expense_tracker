@@ -81,7 +81,7 @@ class ExpensePieChart extends StatelessWidget {
     for (int i = 0; i < entries.length; i++) {
       final entry = entries[i];
       final percentage = (entry.value / total) * 100;
-      
+
       sections.add(
         PieChartSectionData(
           color: AppColors.getCategoryColor(i, 'expense'),
@@ -103,7 +103,7 @@ class ExpensePieChart extends StatelessWidget {
 
   Widget _buildLegend(List<PieChartSectionData> sections) {
     final entries = data.entries.toList();
-    
+
     return Wrap(
       spacing: 8,
       runSpacing: 8,
@@ -111,7 +111,7 @@ class ExpensePieChart extends StatelessWidget {
       children: List.generate(entries.length, (index) {
         final entry = entries[index];
         final section = sections[index];
-        
+
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
@@ -134,7 +134,7 @@ class ExpensePieChart extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 6),
-              
+
               // Category name
               Text(
                 entry.key,
@@ -144,7 +144,7 @@ class ExpensePieChart extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              
+
               // Amount
               Text(
                 Formatters.formatCurrency(entry.value),
@@ -274,7 +274,7 @@ class IncomePieChart extends StatelessWidget {
     for (int i = 0; i < entries.length; i++) {
       final entry = entries[i];
       final percentage = (entry.value / total) * 100;
-      
+
       sections.add(
         PieChartSectionData(
           color: AppColors.getCategoryColor(i, 'income'),
@@ -296,7 +296,7 @@ class IncomePieChart extends StatelessWidget {
 
   Widget _buildLegend(List<PieChartSectionData> sections) {
     final entries = data.entries.toList();
-    
+
     return Wrap(
       spacing: 8,
       runSpacing: 8,
@@ -304,7 +304,7 @@ class IncomePieChart extends StatelessWidget {
       children: List.generate(entries.length, (index) {
         final entry = entries[index];
         final section = sections[index];
-        
+
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(

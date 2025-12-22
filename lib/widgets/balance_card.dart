@@ -19,7 +19,7 @@ class BalanceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPositive = balance >= 0;
-    
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -62,7 +62,7 @@ class BalanceCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            
+
             // Balance (use FittedBox so it scales down in tight test constraints)
             FittedBox(
               fit: BoxFit.scaleDown,
@@ -79,7 +79,7 @@ class BalanceCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            
+
             // Status indicator
             Row(
               children: [
@@ -99,43 +99,43 @@ class BalanceCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            
+
             // Income and Expense row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Income
-                  _buildStatItem(
-                    context,
-                    'Thu nhập',
-                    income,
-                    AppColors.incomeColor,
-                    Icons.arrow_upward,
-                  ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Income
+                _buildStatItem(
+                  context,
+                  'Thu nhập',
+                  income,
+                  AppColors.incomeColor,
+                  Icons.arrow_upward,
+                ),
 
-                  // Vertical divider
-                  Container(
-                    width: 1,
-                    height: 40,
-                    color: Colors.white.withAlpha((0.3 * 255).round()),
-                  ),
+                // Vertical divider
+                Container(
+                  width: 1,
+                  height: 40,
+                  color: Colors.white.withAlpha((0.3 * 255).round()),
+                ),
 
-                  // Expense
-                  _buildStatItem(
-                    context,
-                    'Chi tiêu',
-                    expense,
-                    AppColors.expenseColor,
-                    Icons.arrow_downward,
-                  ),
-                ],
-              ),
+                // Expense
+                _buildStatItem(
+                  context,
+                  'Chi tiêu',
+                  expense,
+                  AppColors.expenseColor,
+                  Icons.arrow_downward,
+                ),
+              ],
+            ),
           ],
         ),
       ),
     );
   }
-  
+
   Widget _buildStatItem(
     BuildContext context,
     String title,

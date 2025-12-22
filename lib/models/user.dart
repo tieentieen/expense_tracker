@@ -7,7 +7,7 @@ class User {
   String name;
   String? avatarUrl;
   DateTime createdAt;
-  
+
   User({
     this.id,
     required this.email,
@@ -16,7 +16,7 @@ class User {
     this.avatarUrl,
     required this.createdAt,
   });
-  
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -27,7 +27,7 @@ class User {
       'created_at': createdAt.toIso8601String(),
     };
   }
-  
+
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
       id: map['id'],
@@ -38,7 +38,7 @@ class User {
       createdAt: DateTime.parse(map['created_at']),
     );
   }
-  
+
   User copyWith({
     int? id,
     String? email,
@@ -56,6 +56,6 @@ class User {
       createdAt: createdAt ?? this.createdAt,
     );
   }
-  
+
   String get formattedCreatedAt => DateFormat('dd/MM/yyyy').format(createdAt);
 }

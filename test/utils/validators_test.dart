@@ -28,7 +28,8 @@ void main() {
       });
 
       test('returns error for short password', () {
-        expect(Validators.validatePassword('12345'), 'Mật khẩu phải có ít nhất 6 ký tự');
+        expect(Validators.validatePassword('12345'),
+            'Mật khẩu phải có ít nhất 6 ký tự');
       });
     });
 
@@ -38,11 +39,13 @@ void main() {
       });
 
       test('returns error when passwords do not match', () {
-        expect(Validators.validateConfirmPassword('123456', 'wrong'), 'Mật khẩu không khớp');
+        expect(Validators.validateConfirmPassword('123456', 'wrong'),
+            'Mật khẩu không khớp');
       });
 
       test('returns error for empty confirm password', () {
-        expect(Validators.validateConfirmPassword('', '123456'), 'Vui lòng xác nhận mật khẩu');
+        expect(Validators.validateConfirmPassword('', '123456'),
+            'Vui lòng xác nhận mật khẩu');
       });
     });
 
@@ -71,7 +74,8 @@ void main() {
 
       test('returns error for too long title', () {
         final longTitle = 'A' * 101;
-        expect(Validators.validateTitle(longTitle), 'Tiêu đề không được quá 100 ký tự');
+        expect(Validators.validateTitle(longTitle),
+            'Tiêu đề không được quá 100 ký tự');
       });
     });
 
@@ -110,7 +114,8 @@ void main() {
 
       test('returns error for too long note', () {
         final longNote = 'A' * 501;
-        expect(Validators.validateNote(longNote), 'Ghi chú không được quá 500 ký tự');
+        expect(Validators.validateNote(longNote),
+            'Ghi chú không được quá 500 ký tự');
       });
     });
 
@@ -125,7 +130,8 @@ void main() {
 
       test('returns error for future date too far', () {
         final farFuture = DateTime.now().add(const Duration(days: 366));
-        expect(Validators.validateDate(farFuture), 'Ngày không được trong tương lai quá 1 năm');
+        expect(Validators.validateDate(farFuture),
+            'Ngày không được trong tương lai quá 1 năm');
       });
     });
 
@@ -147,12 +153,15 @@ void main() {
       });
 
       test('returns error for empty type', () {
-        expect(Validators.validateTransactionType(''), 'Vui lòng chọn loại giao dịch');
-        expect(Validators.validateTransactionType(null), 'Vui lòng chọn loại giao dịch');
+        expect(Validators.validateTransactionType(''),
+            'Vui lòng chọn loại giao dịch');
+        expect(Validators.validateTransactionType(null),
+            'Vui lòng chọn loại giao dịch');
       });
 
       test('returns error for invalid type', () {
-        expect(Validators.validateTransactionType('other'), 'Loại giao dịch không hợp lệ');
+        expect(Validators.validateTransactionType('other'),
+            'Loại giao dịch không hợp lệ');
       });
     });
   });

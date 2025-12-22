@@ -67,7 +67,8 @@ class AuthService {
   /// Cập nhật profile (tên và avatar)
   Future<bool> updateProfile(String name, String? avatarUrl) async {
     if (_currentUser == null) return false;
-    final rows = await _db.updateUserProfile(_currentUser!.id!, name, avatarUrl);
+    final rows =
+        await _db.updateUserProfile(_currentUser!.id!, name, avatarUrl);
     if (rows > 0) {
       _currentUser = _currentUser!.copyWith(name: name, avatarUrl: avatarUrl);
       return true;
@@ -80,7 +81,8 @@ class AuthService {
     if (_currentUser == null) return false;
     final rows = await _db.changePassword(_currentUser!.id!, newPassword);
     if (rows > 0) {
-      _currentUser = _currentUser!.copyWith(password: newPassword); // Update local
+      _currentUser =
+          _currentUser!.copyWith(password: newPassword); // Update local
       return true;
     }
     return false;

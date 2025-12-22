@@ -8,9 +8,9 @@ import '../../utils/formatters.dart';
 
 class ReportScreen extends StatefulWidget {
   final int userId;
-  
+
   const ReportScreen({super.key, required this.userId});
-  
+
   @override
   State<ReportScreen> createState() => _ReportScreenState();
 }
@@ -18,7 +18,7 @@ class ReportScreen extends StatefulWidget {
 class _ReportScreenState extends State<ReportScreen> {
   String _selectedPeriod = 'month'; // 'week', 'month', 'year'
   DateTime _selectedDate = DateTime.now();
-  
+
   @override
   void initState() {
     super.initState();
@@ -27,51 +27,54 @@ class _ReportScreenState extends State<ReportScreen> {
           .loadTransactions(widget.userId);
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TransactionProvider>(context);
-    
+
     // Filter transactions for selected period
     final filteredTransactions = provider.transactions.where((t) {
       switch (_selectedPeriod) {
         case 'week':
           final weekAgo = _selectedDate.subtract(const Duration(days: 6));
-          return t.date.isAfter(weekAgo) && t.date.isBefore(_selectedDate.add(const Duration(days: 1)));
+          return t.date.isAfter(weekAgo) &&
+              t.date.isBefore(_selectedDate.add(const Duration(days: 1)));
         case 'month':
-          return t.date.month == _selectedDate.month && 
-                 t.date.year == _selectedDate.year;
+          return t.date.month == _selectedDate.month &&
+              t.date.year == _selectedDate.year;
         case 'year':
           return t.date.year == _selectedDate.year;
         default:
           return true;
       }
     }).toList();
-    
+
     final totalIncome = filteredTransactions
         .where((t) => t.type == 'income')
         .fold(0.0, (sum, t) => sum + t.amount);
-    
+
     final totalExpense = filteredTransactions
         .where((t) => t.type == 'expense')
         .fold(0.0, (sum, t) => sum + t.amount);
-    
+
     final balance = totalIncome - totalExpense;
-    
+
     // Category analysis
     final expenseByCategory = <String, double>{};
     final incomeByCategory = <String, double>{};
-    
+
     for (final transaction in filteredTransactions) {
       if (transaction.type == 'expense') {
-        final categoryName = provider.getCategoryById(transaction.categoryId).name;
+        final categoryName =
+            provider.getCategoryById(transaction.categoryId).name;
         expenseByCategory.update(
           categoryName,
           (value) => value + transaction.amount,
           ifAbsent: () => transaction.amount,
         );
       } else {
-        final categoryName = provider.getCategoryById(transaction.categoryId).name;
+        final categoryName =
+            provider.getCategoryById(transaction.categoryId).name;
         incomeByCategory.update(
           categoryName,
           (value) => value + transaction.amount,
@@ -79,7 +82,7 @@ class _ReportScreenState extends State<ReportScreen> {
         );
       }
     }
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Thống Kê Chi Tiêu'),
@@ -103,14 +106,15 @@ class _ReportScreenState extends State<ReportScreen> {
             children: [
               // Period selector
               _buildPeriodSelector(),
-              
+
               // Summary cards
               _buildSummaryCards(totalIncome, totalExpense, balance),
-              
+
               // Charts
               if (totalExpense > 0 || totalIncome > 0)
-                _buildChartsSection(expenseByCategory, incomeByCategory, provider),
-              
+                _buildChartsSection(
+                    expenseByCategory, incomeByCategory, provider),
+
               // Category breakdown
               _buildCategoryBreakdown(
                 expenseByCategory,
@@ -118,7 +122,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 totalExpense,
                 totalIncome,
               ),
-              
+
               const SizedBox(height: 40),
             ],
           ),
@@ -126,14 +130,14 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
     );
   }
-  
+
   Widget _buildPeriodSelector() {
     final periods = [
       {'label': 'Tuần', 'value': 'week'},
       {'label': 'Tháng', 'value': 'month'},
       {'label': 'Năm', 'value': 'year'},
     ];
-    
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Card(
@@ -164,7 +168,8 @@ class _ReportScreenState extends State<ReportScreen> {
                       child: ChoiceChip(
                         label: Text(period['label']!),
                         selected: _selectedPeriod == period['value'],
-                        selectedColor: AppColors.primaryLight.withAlpha((0.3 * 255).round()),
+                        selectedColor: AppColors.primaryLight
+                            .withAlpha((0.3 * 255).round()),
                         onSelected: (_) {
                           setState(() {
                             _selectedPeriod = period['value']!;
@@ -178,7 +183,8 @@ class _ReportScreenState extends State<ReportScreen> {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  const Icon(Icons.calendar_today, size: 16, color: Colors.grey),
+                  const Icon(Icons.calendar_today,
+                      size: 16, color: Colors.grey),
                   const SizedBox(width: 8),
                   Text(
                     _getPeriodLabel(),
@@ -196,7 +202,8 @@ class _ReportScreenState extends State<ReportScreen> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.chevron_right),
-                    onPressed: _canGoToNextPeriod() ? () => _changeDate(1) : null,
+                    onPressed:
+                        _canGoToNextPeriod() ? () => _changeDate(1) : null,
                     iconSize: 20,
                     tooltip: 'Kỳ sau',
                   ),
@@ -208,7 +215,7 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
     );
   }
-  
+
   Widget _buildSummaryCards(double income, double expense, double balance) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -244,7 +251,7 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
     );
   }
-  
+
   Widget _buildSummaryCard(
     String title,
     double amount,
@@ -299,7 +306,7 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
     );
   }
-  
+
   Widget _buildChartsSection(
     Map<String, double> expenseByCategory,
     Map<String, double> incomeByCategory,
@@ -342,9 +349,9 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
               ),
             ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Income Pie Chart
           if (incomeByCategory.isNotEmpty)
             Card(
@@ -378,9 +385,9 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
               ),
             ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Bar Chart
           Card(
             elevation: 3,
@@ -404,8 +411,10 @@ class _ReportScreenState extends State<ReportScreen> {
                   SizedBox(
                     height: 200,
                     child: IncomeExpenseBarChart(
-                      monthlyIncome: provider.getMonthlyData(DateTime.now().year, 'income'),
-                      monthlyExpense: provider.getMonthlyData(DateTime.now().year, 'expense'),
+                      monthlyIncome: provider.getMonthlyData(
+                          DateTime.now().year, 'income'),
+                      monthlyExpense: provider.getMonthlyData(
+                          DateTime.now().year, 'expense'),
                       year: DateTime.now().year,
                     ),
                   ),
@@ -417,7 +426,7 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
     );
   }
-  
+
   Widget _buildCategoryBreakdown(
     Map<String, double> expenseByCategory,
     Map<String, double> incomeByCategory,
@@ -426,10 +435,10 @@ class _ReportScreenState extends State<ReportScreen> {
   ) {
     final expenseEntries = expenseByCategory.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
-    
+
     final incomeEntries = incomeByCategory.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
-    
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -444,7 +453,7 @@ class _ReportScreenState extends State<ReportScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Expense breakdown
           if (expenseEntries.isNotEmpty)
             _buildCategoryList(
@@ -453,9 +462,9 @@ class _ReportScreenState extends State<ReportScreen> {
               totalExpense,
               AppColors.expenseColor,
             ),
-          
+
           const SizedBox(height: 20),
-          
+
           // Income breakdown
           if (incomeEntries.isNotEmpty)
             _buildCategoryList(
@@ -464,14 +473,14 @@ class _ReportScreenState extends State<ReportScreen> {
               totalIncome,
               AppColors.incomeColor,
             ),
-          
+
           if (expenseEntries.isEmpty && incomeEntries.isEmpty)
             _buildNoDataMessage('Không có dữ liệu để hiển thị'),
         ],
       ),
     );
   }
-  
+
   Widget _buildCategoryList(
     String title,
     List<MapEntry<String, double>> entries,
@@ -517,10 +526,10 @@ class _ReportScreenState extends State<ReportScreen> {
             ),
             const SizedBox(height: 12),
             ...entries.map((entry) {
-              final percentage = total > 0 
+              final percentage = total > 0
                   ? (entry.value / total * 100).toStringAsFixed(1)
                   : '0.0';
-              
+
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: Row(
@@ -533,7 +542,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                     ),
-                    
+
                     // Progress bar
                     Expanded(
                       flex: 4,
@@ -548,7 +557,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         ),
                       ),
                     ),
-                    
+
                     // Amount and percentage
                     Expanded(
                       flex: 3,
@@ -581,7 +590,7 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
     );
   }
-  
+
   Widget _buildNoDataMessage(String message) {
     return Container(
       padding: const EdgeInsets.all(32),
@@ -605,7 +614,7 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
     );
   }
-  
+
   String _getPeriodLabel() {
     switch (_selectedPeriod) {
       case 'week':
@@ -619,7 +628,7 @@ class _ReportScreenState extends State<ReportScreen> {
         return 'Tất cả';
     }
   }
-  
+
   void _changeDate(int delta) {
     setState(() {
       switch (_selectedPeriod) {
@@ -638,7 +647,7 @@ class _ReportScreenState extends State<ReportScreen> {
       }
     });
   }
-  
+
   bool _canGoToNextPeriod() {
     final now = DateTime.now();
     switch (_selectedPeriod) {
@@ -652,7 +661,7 @@ class _ReportScreenState extends State<ReportScreen> {
         return false;
     }
   }
-  
+
   Future<void> _exportReport(TransactionProvider provider) async {
     // Hiển thị dialog chọn loại export
     final exportType = await showDialog<String>(
@@ -676,7 +685,7 @@ class _ReportScreenState extends State<ReportScreen> {
         ],
       ),
     );
-    
+
     if (exportType != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -684,14 +693,15 @@ class _ReportScreenState extends State<ReportScreen> {
           backgroundColor: AppColors.primaryLight,
         ),
       );
-      
+
       // Hiện tại chỉ hiển thị thông báo
       await Future.delayed(const Duration(seconds: 2));
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Xuất báo cáo thành công!'),
-          backgroundColor: Colors.green, // Thay AppColors.successColor bằng Colors.green
+          backgroundColor:
+              Colors.green, // Thay AppColors.successColor bằng Colors.green
         ),
       );
     }

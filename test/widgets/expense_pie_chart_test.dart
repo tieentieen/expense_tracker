@@ -6,7 +6,8 @@ import 'package:fl_chart/fl_chart.dart';
 
 void main() {
   group('ExpensePieChart Widget Tests', () {
-    testWidgets('renders empty chart when data is empty', (WidgetTester tester) async {
+    testWidgets('renders empty chart when data is empty',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -40,7 +41,8 @@ void main() {
       expect(find.text('Tổng'), findsOneWidget);
     });
 
-    testWidgets('shows legend when showLegend is true', (WidgetTester tester) async {
+    testWidgets('shows legend when showLegend is true',
+        (WidgetTester tester) async {
       final data = {
         'Ăn uống': 500000.0,
         'Di chuyển': 300000.0,
@@ -59,7 +61,8 @@ void main() {
       expect(find.text('Di chuyển'), findsOneWidget);
     });
 
-    testWidgets('hides legend when showLegend is false', (WidgetTester tester) async {
+    testWidgets('hides legend when showLegend is false',
+        (WidgetTester tester) async {
       final data = {
         'Ăn uống': 500000.0,
         'Di chuyển': 300000.0,
@@ -93,14 +96,15 @@ void main() {
 
       final pieChart = tester.widget<PieChart>(find.byType(PieChart));
       final pieChartData = pieChart.data;
-      
+
       // Check that center space radius is half of the provided radius
       expect(pieChartData.centerSpaceRadius, 25);
     });
   });
 
   group('IncomePieChart Widget Tests', () {
-    testWidgets('renders empty chart when data is empty', (WidgetTester tester) async {
+    testWidgets('renders empty chart when data is empty',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -114,7 +118,8 @@ void main() {
       expect(find.byType(PieChart), findsNothing);
     });
 
-    testWidgets('renders income pie chart with data', (WidgetTester tester) async {
+    testWidgets('renders income pie chart with data',
+        (WidgetTester tester) async {
       final data = {
         'Lương': 10000000.0,
         'Freelance': 5000000.0,

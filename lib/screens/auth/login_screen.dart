@@ -8,7 +8,7 @@ import '../../utils/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-  
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -19,14 +19,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _rememberMe = false;
-  
+
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     AuthProvider? authProvider;
@@ -42,11 +42,12 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
-      transactionProvider = Provider.of<TransactionProvider>(context, listen: false);
+      transactionProvider =
+          Provider.of<TransactionProvider>(context, listen: false);
     } catch (_) {
       transactionProvider = null;
     }
-    
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -68,11 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Logo/Header
                 _buildHeader(),
                 const SizedBox(height: 40),
-                
+
                 // Form đăng nhập
                 _buildLoginForm(authProvider, transactionProvider),
                 const SizedBox(height: 30),
-                
+
                 // Link đăng ký
                 _buildRegisterLink(),
               ],
@@ -82,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-  
+
   Widget _buildHeader() {
     return Column(
       children: [
@@ -126,8 +127,9 @@ class _LoginScreenState extends State<LoginScreen> {
       ],
     );
   }
-  
-  Widget _buildLoginForm(AuthProvider? authProvider, TransactionProvider? transactionProvider) {
+
+  Widget _buildLoginForm(
+      AuthProvider? authProvider, TransactionProvider? transactionProvider) {
     return Card(
       elevation: 8,
       shape: RoundedRectangleBorder(
@@ -148,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // Email field
               TextFormField(
                 controller: _emailController,
@@ -167,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 16),
-              
+
               // Password field
               TextFormField(
                 controller: _passwordController,
@@ -177,7 +179,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                      _obscurePassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
                       color: Colors.grey,
                     ),
                     onPressed: () {
@@ -197,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textInputAction: TextInputAction.done,
               ),
               const SizedBox(height: 8),
-              
+
               // Remember me & Forgot password
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -222,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                  
+
                   // Forgot password
                   TextButton(
                     onPressed: () {
@@ -239,15 +243,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              
+
               // Login button
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-          onPressed: (authProvider?.isLoading ?? false) || authProvider == null
-            ? null
-            : () => _handleLogin(authProvider, transactionProvider),
+                  onPressed: (authProvider?.isLoading ?? false) ||
+                          authProvider == null
+                      ? null
+                      : () => _handleLogin(authProvider, transactionProvider),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryLight,
                     shape: RoundedRectangleBorder(
@@ -276,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // Divider
               Row(
                 children: [
@@ -305,7 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               const SizedBox(height: 16),
-              
+
               // Social login (optional)
               const Text(
                 'Đăng nhập với',
@@ -319,7 +324,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.g_mobiledata, size: 40, color: Colors.red),
+                    icon: const Icon(Icons.g_mobiledata,
+                        size: 40, color: Colors.red),
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -331,7 +337,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(width: 16),
                   IconButton(
-                    icon: const Icon(Icons.facebook, size: 40, color: Colors.blue),
+                    icon: const Icon(Icons.facebook,
+                        size: 40, color: Colors.blue),
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -350,7 +357,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-    Widget _buildRegisterLink() {
+  Widget _buildRegisterLink() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -378,21 +385,25 @@ class _LoginScreenState extends State<LoginScreen> {
       ],
     );
   }
-  
-  void _handleLogin(AuthProvider? authProvider, TransactionProvider? transactionProvider) {
+
+  void _handleLogin(
+      AuthProvider? authProvider, TransactionProvider? transactionProvider) {
     // If providers are not available (e.g. in isolated widget tests), do nothing.
     if (authProvider == null) return;
 
     if (_formKey.currentState!.validate()) {
-      authProvider.login(
+      authProvider
+          .login(
         email: _emailController.text.trim(),
         password: _passwordController.text,
-      ).then((result) async {
+      )
+          .then((result) async {
         if (result['success'] == true) {
           // Load initial data
           await transactionProvider?.loadInitialData();
-          await transactionProvider?.loadTransactions(authProvider.currentUserId!);
-          
+          await transactionProvider
+              ?.loadTransactions(authProvider.currentUserId!);
+
           // Hiển thị thông báo thành công
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -401,7 +412,7 @@ class _LoginScreenState extends State<LoginScreen> {
               duration: const Duration(seconds: 2),
             ),
           );
-          
+
           // Điều hướng đến màn hình chính
           Future.delayed(const Duration(milliseconds: 1500), () {
             Navigator.pushReplacementNamed(
@@ -431,10 +442,10 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
-  
+
   void _showForgotPasswordDialog() {
     final emailController = TextEditingController();
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -465,7 +476,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Liên kết đặt lại mật khẩu đã được gửi đến email của bạn'),
+                    content: Text(
+                        'Liên kết đặt lại mật khẩu đã được gửi đến email của bạn'),
                     backgroundColor: Colors.green,
                   ),
                 );

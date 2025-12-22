@@ -56,7 +56,7 @@ void main() {
       final color0 = AppColors.getCategoryColor(0, 'expense');
       final color1 = AppColors.getCategoryColor(1, 'expense');
       final color10 = AppColors.getCategoryColor(10, 'expense');
-      
+
       expect(color0, AppColors.categoryColors[0]);
       expect(color1, AppColors.categoryColors[1]);
       // Test wrap-around behavior
@@ -67,7 +67,7 @@ void main() {
       final color0 = AppColors.getCategoryColor(0, 'income');
       final color1 = AppColors.getCategoryColor(1, 'income');
       final color10 = AppColors.getCategoryColor(10, 'income');
-      
+
       expect(color0, AppColors.incomeCategoryColors[0]);
       expect(color1, AppColors.incomeCategoryColors[1]);
       // Test wrap-around behavior
@@ -79,23 +79,23 @@ void main() {
       // Test getPrimary
       expect(AppColors.primaryLight, const Color(0xFFA7C5EB));
       expect(AppColors.primaryDark, const Color(0xFF6A93C9));
-      
+
       // Test getBackground
       expect(AppColors.backgroundLight, const Color(0xFFFAF3E0));
       expect(AppColors.backgroundDark, const Color(0xFF242424));
-      
+
       // Test getSurface
       expect(AppColors.surfaceLight, const Color(0xFFFFFFFF));
       expect(AppColors.surfaceDark, const Color(0xFF363636));
-      
+
       // Test getCardColor
       expect(AppColors.cardLight, const Color(0xFFFFFFFF));
       expect(AppColors.cardDark, const Color(0xFF424242));
-      
+
       // Test getTextColor
       expect(AppColors.onBackgroundLight, const Color(0xFF5D5D5D));
       expect(AppColors.onBackgroundDark, const Color(0xFFE0E0E0));
-      
+
       // Test getDividerColor
       expect(AppColors.dividerLight, const Color(0xFFE0E0E0));
       expect(AppColors.dividerDark, const Color(0xFF555555));
@@ -144,7 +144,8 @@ void main() {
     test('Category colors should have unique values', () {
       // Check for duplicate colors in category lists
       final Set<Color> expenseColorSet = Set.from(AppColors.categoryColors);
-      final Set<Color> incomeColorSet = Set.from(AppColors.incomeCategoryColors);
+      final Set<Color> incomeColorSet =
+          Set.from(AppColors.incomeCategoryColors);
 
       expect(expenseColorSet.length, AppColors.categoryColors.length,
           reason: 'Expense category colors should be unique');
@@ -153,4 +154,3 @@ void main() {
     });
   });
 }
-

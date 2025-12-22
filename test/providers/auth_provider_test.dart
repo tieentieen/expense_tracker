@@ -15,7 +15,7 @@ void main() {
 
   setUp(() {
     mockDb = MockDatabaseHelper();
-    provider = AuthProvider(dbHelper: mockDb); 
+    provider = AuthProvider(dbHelper: mockDb);
   });
 
   group('AuthProvider - Initial State', () {
@@ -46,7 +46,8 @@ void main() {
     });
 
     test('register fails if email in use', () async {
-      when(mockDb.authenticateUser(any, any)).thenAnswer((_) async => {'id': 2});
+      when(mockDb.authenticateUser(any, any))
+          .thenAnswer((_) async => {'id': 2});
 
       final result = await provider.register(
         email: 'existing@test.com',
@@ -62,7 +63,8 @@ void main() {
 
   group('AuthProvider - Login', () {
     test('login success sets user data', () async {
-      when(mockDb.authenticateUser(any, any)).thenAnswer((_) async => {'id': 3});
+      when(mockDb.authenticateUser(any, any))
+          .thenAnswer((_) async => {'id': 3});
       when(mockDb.getUserById(3)).thenAnswer((_) async => User(
             id: 3,
             email: 'login@test.com',
@@ -91,7 +93,7 @@ void main() {
       );
 
       expect(result['success'], false);
-      expect(result['message'], AppConstants.errorWrongPassword); 
+      expect(result['message'], AppConstants.errorWrongPassword);
       expect(provider.isLoggedIn, false);
     });
   });
@@ -150,7 +152,8 @@ void main() {
         name: 'User',
         email: 'change@test.com',
       );
-      when(mockDb.authenticateUser('change@test.com', 'old')).thenAnswer((_) async => {'id': 6});
+      when(mockDb.authenticateUser('change@test.com', 'old'))
+          .thenAnswer((_) async => {'id': 6});
       when(mockDb.changePassword(6, 'new')).thenAnswer((_) async => 1);
 
       final result = await provider.changePassword(

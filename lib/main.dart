@@ -59,7 +59,8 @@ class MyApp extends StatelessWidget {
           return ReportScreen(userId: userId ?? 0);
         },
         '/profile': (context) {
-          final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
           return ProfileScreen(
             userId: args?['userId'] ?? 0,
             userName: args?['userName'] ?? 'Người dùng',

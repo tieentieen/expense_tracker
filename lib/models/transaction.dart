@@ -47,7 +47,9 @@ class Transaction {
       title: map['title'],
       // Accept numeric types from the database (int/double) and convert to
       // double for internal representation.
-      amount: (map['amount'] is num) ? (map['amount'] as num).toDouble() : double.parse(map['amount'].toString()),
+      amount: (map['amount'] is num)
+          ? (map['amount'] as num).toDouble()
+          : double.parse(map['amount'].toString()),
       date: DateTime.parse(map['date']),
       categoryId: map['category_id'],
       type: map['type'],
@@ -77,17 +79,18 @@ class Transaction {
     );
   }
 
-
   String get formattedDate => DateFormat('dd/MM/yyyy').format(date);
   String get formattedAmount {
     // Use a neutral grouping format and prefix the currency symbol to match
     // test expectations (e.g. "₫100,000"). The 'vi_VN' locale places the
     // symbol after the amount and uses dots as group separators, so we
     // format manually using an en_US pattern and prefix the symbol.
-    final s = NumberFormat.currency(locale: 'en_US', symbol: '', decimalDigits: 0).format(amount);
+    final s =
+        NumberFormat.currency(locale: 'en_US', symbol: '', decimalDigits: 0)
+            .format(amount);
     return '₫$s';
   }
-  
+
   String get formattedTime => DateFormat('HH:mm').format(date);
   String get formattedDateTime => DateFormat('dd/MM/yyyy HH:mm').format(date);
 

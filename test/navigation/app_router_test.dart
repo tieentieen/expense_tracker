@@ -14,8 +14,10 @@ void main() {
       expect(AppRouter.router.namedLocation('home'), '/home');
       expect(AppRouter.router.namedLocation('report'), '/report');
       expect(AppRouter.router.namedLocation('profile'), '/profile');
-      expect(AppRouter.router.namedLocation('add-transaction'), '/add-transaction');
-      expect(AppRouter.router.namedLocation('edit-transaction'), '/edit-transaction');
+      expect(AppRouter.router.namedLocation('add-transaction'),
+          '/add-transaction');
+      expect(AppRouter.router.namedLocation('edit-transaction'),
+          '/edit-transaction');
     });
 
     test('router has configuration', () {

@@ -131,8 +131,8 @@ class TransactionProvider with ChangeNotifier {
 
       bool matchesTime = _filterByTime(transaction.date);
 
-      bool matchesType = _selectedType == null ||
-          transaction.type == _selectedType;
+      bool matchesType =
+          _selectedType == null || transaction.type == _selectedType;
 
       return matchesSearch && matchesCategory && matchesTime && matchesType;
     }).toList();
@@ -275,9 +275,7 @@ class TransactionProvider with ChangeNotifier {
   }
 
   List<my_transaction.Transaction> getTransactionsByCategory(int categoryId) {
-    return _transactions
-        .where((t) => t.categoryId == categoryId)
-        .toList();
+    return _transactions.where((t) => t.categoryId == categoryId).toList();
   }
 
   my_transaction.Transaction? getTransactionById(int id) {

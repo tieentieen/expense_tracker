@@ -11,13 +11,13 @@ import '../utils/formatters.dart';
 class AddTransactionScreen extends StatefulWidget {
   final Transaction? transaction;
   final bool isEditing;
-  
+
   const AddTransactionScreen({
     super.key,
     this.transaction,
     this.isEditing = false,
   });
-  
+
   @override
   State<AddTransactionScreen> createState() => _AddTransactionScreenState();
 }
@@ -27,27 +27,28 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
-  
+
   String _selectedType = 'expense';
   Category _selectedCategory = CategoryRepository.getDefaultExpenseCategory();
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
-  
+
   @override
   void initState() {
     super.initState();
-    
+
     if (widget.isEditing && widget.transaction != null) {
       _titleController.text = widget.transaction!.title;
       _amountController.text = widget.transaction!.amount.toString();
       _noteController.text = widget.transaction!.note ?? '';
       _selectedType = widget.transaction!.type;
-      _selectedCategory = CategoryRepository.getCategoryById(widget.transaction!.categoryId);
+      _selectedCategory =
+          CategoryRepository.getCategoryById(widget.transaction!.categoryId);
       _selectedDate = widget.transaction!.date;
       _selectedTime = TimeOfDay.fromDateTime(widget.transaction!.date);
     }
   }
-  
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -55,18 +56,19 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     _noteController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final transactionProvider = Provider.of<TransactionProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
-    final userId = authProvider.currentUserId ?? widget.transaction?.userId ?? 0;
-    
+    final userId =
+        authProvider.currentUserId ?? widget.transaction?.userId ?? 0;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.isEditing ? 'Sửa giao dịch' : 'Thêm giao dịch'),
-        backgroundColor: _selectedType == 'income' 
-            ? AppColors.incomeColor 
+        backgroundColor: _selectedType == 'income'
+            ? AppColors.incomeColor
             : AppColors.expenseColor,
         foregroundColor: Colors.white,
         elevation: 0,
@@ -91,7 +93,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               // Type selector
               _buildTypeSelector(),
               const SizedBox(height: 20),
-              
+
               // Title field
               TextFormField(
                 controller: _titleController,
@@ -108,7 +110,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 16),
-              
+
               // Amount field
               TextFormField(
                 controller: _amountController,
@@ -126,11 +128,11 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 16),
-              
+
               // Category selector
               _buildCategorySelector(),
               const SizedBox(height: 16),
-              
+
               // Date and Time pickers
               Row(
                 children: [
@@ -144,7 +146,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 ],
               ),
               const SizedBox(height: 16),
-              
+
               // Note field
               TextFormField(
                 controller: _noteController,
@@ -163,7 +165,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 textInputAction: TextInputAction.done,
               ),
               const SizedBox(height: 30),
-              
+
               // Save button
               SizedBox(
                 width: double.infinity,
@@ -194,7 +196,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // Quick amount buttons (optional)
               if (!widget.isEditing) _buildQuickAmountButtons(),
             ],
@@ -204,7 +206,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     );
   }
 
-    Widget _buildTypeSelector() {
+  Widget _buildTypeSelector() {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -229,7 +231,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 onSelected: (_) {
                   setState(() {
                     _selectedType = 'expense';
-                    _selectedCategory = CategoryRepository.getDefaultExpenseCategory();
+                    _selectedCategory =
+                        CategoryRepository.getDefaultExpenseCategory();
                   });
                 },
               ),
@@ -250,7 +253,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 onSelected: (_) {
                   setState(() {
                     _selectedType = 'income';
-                    _selectedCategory = CategoryRepository.getDefaultIncomeCategory();
+                    _selectedCategory =
+                        CategoryRepository.getDefaultIncomeCategory();
                   });
                 },
               ),
@@ -260,12 +264,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       ),
     );
   }
-  
+
   Widget _buildCategorySelector() {
     final categories = _selectedType == 'income'
         ? CategoryRepository.getIncomeCategories()
         : CategoryRepository.getExpenseCategories();
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -306,7 +310,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       ],
     );
   }
-  
+
   Widget _buildDatePicker() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,7 +331,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               firstDate: DateTime(2000),
               lastDate: DateTime.now().add(const Duration(days: 365)),
             );
-            
+
             if (pickedDate != null) {
               setState(() {
                 _selectedDate = pickedDate;
@@ -358,7 +362,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       ],
     );
   }
-  
+
   Widget _buildTimePicker() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -377,7 +381,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               context: context,
               initialTime: _selectedTime,
             );
-            
+
             if (pickedTime != null) {
               setState(() {
                 _selectedTime = pickedTime;
@@ -408,10 +412,10 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       ],
     );
   }
-  
+
   Widget _buildQuickAmountButtons() {
     final quickAmounts = [10000, 20000, 50000, 100000, 200000, 500000];
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -445,7 +449,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     );
   }
 
-    void _saveTransaction(
+  void _saveTransaction(
     TransactionProvider provider,
     int userId,
   ) {
@@ -458,7 +462,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
         _selectedTime.hour,
         _selectedTime.minute,
       );
-      
+
       final transaction = Transaction(
         id: widget.isEditing ? widget.transaction!.id : null,
         userId: userId,
@@ -471,7 +475,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
             ? _noteController.text.trim()
             : null,
       );
-      
+
       if (widget.isEditing) {
         provider.updateTransaction(transaction).then((_) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -513,7 +517,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       }
     }
   }
-  
+
   void _showDeleteDialog(
     TransactionProvider provider,
     int userId,
@@ -531,10 +535,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
-              provider.deleteTransaction(
+              provider
+                  .deleteTransaction(
                 widget.transaction!.id!,
                 userId,
-              ).then((_) {
+              )
+                  .then((_) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Xóa giao dịch thành công!'),

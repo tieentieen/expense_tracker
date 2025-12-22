@@ -29,24 +29,29 @@ void main() {
   });
 
   group('HomeScreen Tests', () {
-    testWidgets('should display greeting message with user name', (WidgetTester tester) async {
+    testWidgets('should display greeting message with user name',
+        (WidgetTester tester) async {
       // Arrange
       when(mockTransactionProvider.transactions).thenReturn([]);
       when(mockTransactionProvider.totalIncome).thenReturn(1000.0);
       when(mockTransactionProvider.totalExpense).thenReturn(500.0);
       when(mockTransactionProvider.balance).thenReturn(500.0);
-      when(mockTransactionProvider.getCategoryAnalysis('expense')).thenReturn({});
+      when(mockTransactionProvider.getCategoryAnalysis('expense'))
+          .thenReturn({});
       when(mockAuthProvider.currentUserName).thenReturn('Nguyễn Văn A');
-      when(mockAuthProvider.currentUserEmail).thenReturn('nguyenvana@example.com');
+      when(mockAuthProvider.currentUserEmail)
+          .thenReturn('nguyenvana@example.com');
       when(mockThemeProvider.isDarkMode).thenReturn(false);
 
       // Act
       await tester.pumpWidget(
         MultiProvider(
           providers: [
-            ChangeNotifierProvider<TransactionProvider>.value(value: mockTransactionProvider),
+            ChangeNotifierProvider<TransactionProvider>.value(
+                value: mockTransactionProvider),
             ChangeNotifierProvider<AuthProvider>.value(value: mockAuthProvider),
-            ChangeNotifierProvider<ThemeProvider>.value(value: mockThemeProvider),
+            ChangeNotifierProvider<ThemeProvider>.value(
+                value: mockThemeProvider),
           ],
           child: const MaterialApp(
             home: HomeScreen(userId: 1),
@@ -58,13 +63,15 @@ void main() {
       expect(find.text('Xin chào, Nguyễn! 👋'), findsOneWidget);
     });
 
-    testWidgets('should display empty state when no transactions', (WidgetTester tester) async {
+    testWidgets('should display empty state when no transactions',
+        (WidgetTester tester) async {
       // Arrange
       when(mockTransactionProvider.transactions).thenReturn([]);
       when(mockTransactionProvider.totalIncome).thenReturn(0.0);
       when(mockTransactionProvider.totalExpense).thenReturn(0.0);
       when(mockTransactionProvider.balance).thenReturn(0.0);
-      when(mockTransactionProvider.getCategoryAnalysis('expense')).thenReturn({});
+      when(mockTransactionProvider.getCategoryAnalysis('expense'))
+          .thenReturn({});
       when(mockAuthProvider.currentUserName).thenReturn('Test User');
       when(mockAuthProvider.currentUserEmail).thenReturn('test@example.com');
       when(mockThemeProvider.isDarkMode).thenReturn(false);
@@ -73,9 +80,11 @@ void main() {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
-            ChangeNotifierProvider<TransactionProvider>.value(value: mockTransactionProvider),
+            ChangeNotifierProvider<TransactionProvider>.value(
+                value: mockTransactionProvider),
             ChangeNotifierProvider<AuthProvider>.value(value: mockAuthProvider),
-            ChangeNotifierProvider<ThemeProvider>.value(value: mockThemeProvider),
+            ChangeNotifierProvider<ThemeProvider>.value(
+                value: mockThemeProvider),
           ],
           child: const MaterialApp(
             home: HomeScreen(userId: 1),
@@ -89,13 +98,15 @@ void main() {
       expect(find.byType(ElevatedButton), findsOneWidget);
     });
 
-    testWidgets('should display FAB on home tab but not on other tabs', (WidgetTester tester) async {
+    testWidgets('should display FAB on home tab but not on other tabs',
+        (WidgetTester tester) async {
       // Arrange
       when(mockTransactionProvider.transactions).thenReturn([]);
       when(mockTransactionProvider.totalIncome).thenReturn(0.0);
       when(mockTransactionProvider.totalExpense).thenReturn(0.0);
       when(mockTransactionProvider.balance).thenReturn(0.0);
-      when(mockTransactionProvider.getCategoryAnalysis('expense')).thenReturn({});
+      when(mockTransactionProvider.getCategoryAnalysis('expense'))
+          .thenReturn({});
       when(mockAuthProvider.currentUserName).thenReturn('Test User');
       when(mockAuthProvider.currentUserEmail).thenReturn('test@example.com');
       when(mockThemeProvider.isDarkMode).thenReturn(false);
@@ -104,9 +115,11 @@ void main() {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
-            ChangeNotifierProvider<TransactionProvider>.value(value: mockTransactionProvider),
+            ChangeNotifierProvider<TransactionProvider>.value(
+                value: mockTransactionProvider),
             ChangeNotifierProvider<AuthProvider>.value(value: mockAuthProvider),
-            ChangeNotifierProvider<ThemeProvider>.value(value: mockThemeProvider),
+            ChangeNotifierProvider<ThemeProvider>.value(
+                value: mockThemeProvider),
           ],
           child: const MaterialApp(
             home: HomeScreen(userId: 1),
@@ -125,13 +138,15 @@ void main() {
       expect(find.byType(FloatingActionButton), findsNothing);
     });
 
-    testWidgets('should display all time filter chips', (WidgetTester tester) async {
+    testWidgets('should display all time filter chips',
+        (WidgetTester tester) async {
       // Arrange
       when(mockTransactionProvider.transactions).thenReturn([]);
       when(mockTransactionProvider.totalIncome).thenReturn(0.0);
       when(mockTransactionProvider.totalExpense).thenReturn(0.0);
       when(mockTransactionProvider.balance).thenReturn(0.0);
-      when(mockTransactionProvider.getCategoryAnalysis('expense')).thenReturn({});
+      when(mockTransactionProvider.getCategoryAnalysis('expense'))
+          .thenReturn({});
       when(mockAuthProvider.currentUserName).thenReturn('Test User');
       when(mockAuthProvider.currentUserEmail).thenReturn('test@example.com');
       when(mockThemeProvider.isDarkMode).thenReturn(false);
@@ -140,9 +155,11 @@ void main() {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
-            ChangeNotifierProvider<TransactionProvider>.value(value: mockTransactionProvider),
+            ChangeNotifierProvider<TransactionProvider>.value(
+                value: mockTransactionProvider),
             ChangeNotifierProvider<AuthProvider>.value(value: mockAuthProvider),
-            ChangeNotifierProvider<ThemeProvider>.value(value: mockThemeProvider),
+            ChangeNotifierProvider<ThemeProvider>.value(
+                value: mockThemeProvider),
           ],
           child: const MaterialApp(
             home: HomeScreen(userId: 1),
@@ -158,13 +175,15 @@ void main() {
       expect(find.text('Tất cả'), findsOneWidget);
     });
 
-    testWidgets('should display app bar with actions', (WidgetTester tester) async {
+    testWidgets('should display app bar with actions',
+        (WidgetTester tester) async {
       // Arrange
       when(mockTransactionProvider.transactions).thenReturn([]);
       when(mockTransactionProvider.totalIncome).thenReturn(0.0);
       when(mockTransactionProvider.totalExpense).thenReturn(0.0);
       when(mockTransactionProvider.balance).thenReturn(0.0);
-      when(mockTransactionProvider.getCategoryAnalysis('expense')).thenReturn({});
+      when(mockTransactionProvider.getCategoryAnalysis('expense'))
+          .thenReturn({});
       when(mockAuthProvider.currentUserName).thenReturn('Test User');
       when(mockAuthProvider.currentUserEmail).thenReturn('test@example.com');
       when(mockThemeProvider.isDarkMode).thenReturn(false);
@@ -173,9 +192,11 @@ void main() {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
-            ChangeNotifierProvider<TransactionProvider>.value(value: mockTransactionProvider),
+            ChangeNotifierProvider<TransactionProvider>.value(
+                value: mockTransactionProvider),
             ChangeNotifierProvider<AuthProvider>.value(value: mockAuthProvider),
-            ChangeNotifierProvider<ThemeProvider>.value(value: mockThemeProvider),
+            ChangeNotifierProvider<ThemeProvider>.value(
+                value: mockThemeProvider),
           ],
           child: const MaterialApp(
             home: HomeScreen(userId: 1),
@@ -189,13 +210,15 @@ void main() {
       expect(find.byIcon(Icons.dark_mode_outlined), findsOneWidget);
     });
 
-    testWidgets('should display balance card with correct values', (WidgetTester tester) async {
+    testWidgets('should display balance card with correct values',
+        (WidgetTester tester) async {
       // Arrange
       when(mockTransactionProvider.transactions).thenReturn([]);
       when(mockTransactionProvider.totalIncome).thenReturn(1500.0);
       when(mockTransactionProvider.totalExpense).thenReturn(750.0);
       when(mockTransactionProvider.balance).thenReturn(750.0);
-      when(mockTransactionProvider.getCategoryAnalysis('expense')).thenReturn({});
+      when(mockTransactionProvider.getCategoryAnalysis('expense'))
+          .thenReturn({});
       when(mockAuthProvider.currentUserName).thenReturn('Test User');
       when(mockAuthProvider.currentUserEmail).thenReturn('test@example.com');
       when(mockThemeProvider.isDarkMode).thenReturn(false);
@@ -204,9 +227,11 @@ void main() {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
-            ChangeNotifierProvider<TransactionProvider>.value(value: mockTransactionProvider),
+            ChangeNotifierProvider<TransactionProvider>.value(
+                value: mockTransactionProvider),
             ChangeNotifierProvider<AuthProvider>.value(value: mockAuthProvider),
-            ChangeNotifierProvider<ThemeProvider>.value(value: mockThemeProvider),
+            ChangeNotifierProvider<ThemeProvider>.value(
+                value: mockThemeProvider),
           ],
           child: const MaterialApp(
             home: HomeScreen(userId: 1),

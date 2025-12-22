@@ -8,7 +8,7 @@ import '../screens/add_transaction_screen.dart';
 
 class AppRouter {
   static GoRouter get router => _router;
-  
+
   static final _router = GoRouter(
     initialLocation: '/login',
     routes: [

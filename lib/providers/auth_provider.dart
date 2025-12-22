@@ -13,7 +13,7 @@ class AuthProvider with ChangeNotifier {
   String? _currentUserEmail;
   String? _currentUserAvatar;
   DateTime? _currentUserCreatedAt;
-  
+
   // Getters
   bool get isLoading => _isLoading;
   bool get isLoggedIn => _isLoggedIn;
@@ -22,20 +22,20 @@ class AuthProvider with ChangeNotifier {
   String? get currentUserEmail => _currentUserEmail;
   String? get currentUserAvatar => _currentUserAvatar;
   DateTime? get currentUserCreatedAt => _currentUserCreatedAt;
-  
+
   // Constructor chính (dùng trong app thật) + constructor test để inject mock
-  AuthProvider({DatabaseHelper? dbHelper}) 
+  AuthProvider({DatabaseHelper? dbHelper})
       : _dbHelper = dbHelper ?? DatabaseHelper() {
     _checkLoginStatus();
   }
-  
+
   Future<void> _checkLoginStatus() async {
     // Trong ứng dụng thực tế, bạn sẽ lưu token/session
     // Ở đây để đơn giản, reset trạng thái mỗi lần khởi động
     _isLoggedIn = false;
     notifyListeners();
   }
-  
+
   // Phương thức đăng ký
   Future<Map<String, dynamic>> register({
     required String email,
@@ -44,49 +44,40 @@ class AuthProvider with ChangeNotifier {
   }) async {
     _isLoading = true;
     notifyListeners();
-    
+
     try {
       // Kiểm tra email đã tồn tại chưa
       final existingUser = await _dbHelper.authenticateUser(email, password);
       if (existingUser != null) {
-        return {
-          'success': false, 
-          'message': AppConstants.errorEmailInUse
-        };
+        return {'success': false, 'message': AppConstants.errorEmailInUse};
       }
-      
+
       // Đăng ký user mới
       final userId = await _dbHelper.registerUser(email, password, name);
-      
+
       if (userId > 0) {
         _setUserData(
           userId: userId,
           name: name,
           email: email,
         );
-        
+
         return {
-          'success': true, 
+          'success': true,
           'userId': userId,
           'message': AppConstants.successRegister
         };
       } else {
-        return {
-          'success': false, 
-          'message': 'Đăng ký thất bại'
-        };
+        return {'success': false, 'message': 'Đăng ký thất bại'};
       }
     } catch (e) {
-      return {
-        'success': false, 
-        'message': '${AppConstants.errorUnknown}: $e'
-      };
+      return {'success': false, 'message': '${AppConstants.errorUnknown}: $e'};
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
-  
+
   // Phương thức đăng nhập
   Future<Map<String, dynamic>> login({
     required String email,
@@ -94,13 +85,13 @@ class AuthProvider with ChangeNotifier {
   }) async {
     _isLoading = true;
     notifyListeners();
-    
+
     try {
       final userData = await _dbHelper.authenticateUser(email, password);
-      
+
       if (userData != null) {
         final user = await _dbHelper.getUserById(userData['id']);
-        
+
         if (user != null) {
           _setUserData(
             userId: user.id!,
@@ -109,35 +100,26 @@ class AuthProvider with ChangeNotifier {
             avatar: user.avatarUrl,
             createdAt: user.createdAt,
           );
-          
+
           return {
-            'success': true, 
+            'success': true,
             'userId': _currentUserId,
             'message': AppConstants.successLogin
           };
         } else {
-          return {
-            'success': false, 
-            'message': AppConstants.errorUserNotFound
-          };
+          return {'success': false, 'message': AppConstants.errorUserNotFound};
         }
       } else {
-        return {
-          'success': false, 
-          'message': AppConstants.errorWrongPassword
-        };
+        return {'success': false, 'message': AppConstants.errorWrongPassword};
       }
     } catch (e) {
-      return {
-        'success': false, 
-        'message': '${AppConstants.errorUnknown}: $e'
-      };
+      return {'success': false, 'message': '${AppConstants.errorUnknown}: $e'};
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
-  
+
   // Phương thức đăng xuất
   Future<void> logout() async {
     _isLoggedIn = false;
@@ -148,101 +130,74 @@ class AuthProvider with ChangeNotifier {
     _currentUserCreatedAt = null;
     notifyListeners();
   }
-  
+
   // Cập nhật thông tin user
   Future<Map<String, dynamic>> updateProfile({
     required String name,
     String? avatarUrl,
   }) async {
     if (_currentUserId == null) {
-      return {
-        'success': false, 
-        'message': 'Chưa đăng nhập'
-      };
+      return {'success': false, 'message': 'Chưa đăng nhập'};
     }
-    
+
     try {
       final result = await _dbHelper.updateUserProfile(
         _currentUserId!,
         name,
         avatarUrl,
       );
-      
+
       if (result > 0) {
         _currentUserName = name;
         if (avatarUrl != null) {
           _currentUserAvatar = avatarUrl;
         }
         notifyListeners();
-        
-        return {
-          'success': true, 
-          'message': AppConstants.successUpdateProfile
-        };
+
+        return {'success': true, 'message': AppConstants.successUpdateProfile};
       }
-      return {
-        'success': false, 
-        'message': 'Cập nhật thất bại'
-      };
+      return {'success': false, 'message': 'Cập nhật thất bại'};
     } catch (e) {
-      return {
-        'success': false, 
-        'message': '${AppConstants.errorUnknown}: $e'
-      };
+      return {'success': false, 'message': '${AppConstants.errorUnknown}: $e'};
     }
   }
-  
+
   // Đổi mật khẩu
   Future<Map<String, dynamic>> changePassword({
     required String currentPassword,
     required String newPassword,
   }) async {
     if (_currentUserId == null || _currentUserEmail == null) {
-      return {
-        'success': false, 
-        'message': 'Chưa đăng nhập'
-      };
+      return {'success': false, 'message': 'Chưa đăng nhập'};
     }
-    
+
     try {
       // Kiểm tra mật khẩu hiện tại
       final check = await _dbHelper.authenticateUser(
         _currentUserEmail!,
         currentPassword,
       );
-      
+
       if (check == null) {
-        return {
-          'success': false, 
-          'message': 'Mật khẩu hiện tại không đúng'
-        };
+        return {'success': false, 'message': 'Mật khẩu hiện tại không đúng'};
       }
-      
+
       // Cập nhật mật khẩu mới
       final result = await _dbHelper.changePassword(
         _currentUserId!,
         newPassword,
       );
-      
+
       if (result > 0) {
-        return {
-          'success': true, 
-          'message': AppConstants.successChangePassword
-        };
+        return {'success': true, 'message': AppConstants.successChangePassword};
       } else {
-        return {
-          'success': false, 
-          'message': 'Đổi mật khẩu thất bại'
-        };
+        return {'success': false, 'message': 'Đổi mật khẩu thất bại'};
       }
     } catch (e) {
-      return {
-        'success': false, 
-        'message': '${AppConstants.errorUnknown}: $e'
-      };
+      return {'success': false, 'message': '${AppConstants.errorUnknown}: $e'};
     }
   }
-  
+
   // Helper method để set user data
   void _setUserData({
     required int userId,
@@ -276,7 +231,7 @@ class AuthProvider with ChangeNotifier {
       createdAt: createdAt,
     );
   }
-  
+
   // Clear user data (dùng khi logout hoặc xóa tài khoản)
   // ignore: unused_element
   void _clearUserData() {

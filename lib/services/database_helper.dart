@@ -122,14 +122,15 @@ class DatabaseHelper {
     });
   }
 
-  Future<Map<String, dynamic>?> authenticateUser(String email, String password) async {
+  Future<Map<String, dynamic>?> authenticateUser(
+      String email, String password) async {
     final db = await database;
     final List<Map<String, dynamic>> result = await db.query(
       'users',
       where: 'email = ? AND password = ?',
       whereArgs: [email, password],
     );
-    
+
     if (result.isNotEmpty) {
       return result.first;
     }
@@ -143,14 +144,15 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [userId],
     );
-    
+
     if (result.isNotEmpty) {
       return User.fromMap(result.first);
     }
     return null;
   }
 
-  Future<int> updateUserProfile(int userId, String name, String? avatarUrl) async {
+  Future<int> updateUserProfile(
+      int userId, String name, String? avatarUrl) async {
     final db = await database;
     return await db.update(
       'users',
@@ -197,7 +199,7 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [id],
     );
-    
+
     if (result.isNotEmpty) {
       return Category.fromMap(result.first);
     }
@@ -214,31 +216,31 @@ class DatabaseHelper {
     return transaction.id!;
   }
 
-  Future<List<Transaction>> getTransactions(int userId, 
+  Future<List<Transaction>> getTransactions(int userId,
       {String? type, DateTime? startDate, DateTime? endDate}) async {
     final db = await database;
-    
+
     String where = 'user_id = ?';
     List<dynamic> whereArgs = [userId];
-    
+
     if (type != null) {
       where += ' AND type = ?';
       whereArgs.add(type);
     }
-    
+
     if (startDate != null && endDate != null) {
       where += ' AND date BETWEEN ? AND ?';
       whereArgs.add(startDate.toIso8601String());
       whereArgs.add(endDate.toIso8601String());
     }
-    
+
     final List<Map<String, dynamic>> maps = await db.query(
       'transactions',
       where: where,
       whereArgs: whereArgs,
       orderBy: 'date DESC, created_at DESC',
     );
-    
+
     return List.generate(maps.length, (i) => Transaction.fromMap(maps[i]));
   }
 
@@ -249,7 +251,7 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [id],
     );
-    
+
     if (result.isNotEmpty) {
       return Transaction.fromMap(result.first);
     }
@@ -276,68 +278,73 @@ class DatabaseHelper {
   }
 
   // Thống kê
-  Future<double> getTotalIncome(int userId, DateTime? startDate, DateTime? endDate) async {
+  Future<double> getTotalIncome(
+      int userId, DateTime? startDate, DateTime? endDate) async {
     final db = await database;
-    
+
     String where = 'user_id = ? AND type = ?';
     List<dynamic> whereArgs = [userId, 'income'];
-    
+
     if (startDate != null && endDate != null) {
       where += ' AND date BETWEEN ? AND ?';
       whereArgs.add(startDate.toIso8601String());
       whereArgs.add(endDate.toIso8601String());
     }
-    
+
     final result = await db.query(
       'transactions',
       columns: ['SUM(amount) as total'],
       where: where,
       whereArgs: whereArgs,
     );
-    
+
     return result.first['total'] as double? ?? 0;
   }
 
-  Future<double> getTotalExpense(int userId, DateTime? startDate, DateTime? endDate) async {
+  Future<double> getTotalExpense(
+      int userId, DateTime? startDate, DateTime? endDate) async {
     final db = await database;
-    
+
     String where = 'user_id = ? AND type = ?';
     List<dynamic> whereArgs = [userId, 'expense'];
-    
+
     if (startDate != null && endDate != null) {
       where += ' AND date BETWEEN ? AND ?';
       whereArgs.add(startDate.toIso8601String());
       whereArgs.add(endDate.toIso8601String());
     }
-    
+
     final result = await db.query(
       'transactions',
       columns: ['SUM(amount) as total'],
       where: where,
       whereArgs: whereArgs,
     );
-    
+
     return result.first['total'] as double? ?? 0;
   }
 
-  Future<double> getBalance(int userId, DateTime? startDate, DateTime? endDate) async {
+  Future<double> getBalance(
+      int userId, DateTime? startDate, DateTime? endDate) async {
     final income = await getTotalIncome(userId, startDate, endDate);
     final expense = await getTotalExpense(userId, startDate, endDate);
     return income - expense;
   }
 
   // Thống kê theo category
-  Future<Map<String, double>> getCategoryStats(int userId, String type, DateTime? startDate, DateTime? endDate) async {
+  Future<Map<String, double>> getCategoryStats(
+      int userId, String type, DateTime? startDate, DateTime? endDate) async {
     final db = await database;
-    
+
     String where = 't.user_id = ? AND t.type = ?';
     List<dynamic> whereArgs = [userId, type];
-    
+
     if (startDate != null && endDate != null) {
       where += ' AND t.date BETWEEN ? AND ?';
-      whereArgs.addAll([startDate.toIso8601String(), endDate.toIso8601String()]);
+      whereArgs
+          .addAll([startDate.toIso8601String(), endDate.toIso8601String()]);
     }
-    
+
     final result = await db.rawQuery('''
       SELECT c.name, SUM(t.amount) as total
       FROM transactions t
@@ -346,12 +353,12 @@ class DatabaseHelper {
       GROUP BY c.id
       ORDER BY total DESC
     ''', whereArgs);
-    
+
     final Map<String, double> stats = {};
     for (var row in result) {
       stats[row['name'] as String] = row['total'] as double;
     }
-    
+
     return stats;
   }
 }

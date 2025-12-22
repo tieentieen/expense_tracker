@@ -18,7 +18,8 @@ void main() {
       note: 'Ăn tại quán cơm',
     );
 
-    testWidgets('renders basic transaction information', (WidgetTester tester) async {
+    testWidgets('renders basic transaction information',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -30,11 +31,13 @@ void main() {
       // Chỉ test những thứ chắc chắn hiển thị
       expect(find.text('Cơm trưa'), findsOneWidget);
       expect(find.text(Formatters.formatCurrency(50000)), findsOneWidget);
-      expect(find.text(Formatters.formatDate(mockTransaction.date)), findsOneWidget);
+      expect(find.text(Formatters.formatDate(mockTransaction.date)),
+          findsOneWidget);
       expect(find.text('Ăn tại quán cơm'), findsOneWidget);
     });
 
-    testWidgets('CompactTransactionCard renders basic info', (WidgetTester tester) async {
+    testWidgets('CompactTransactionCard renders basic info',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(

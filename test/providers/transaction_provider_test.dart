@@ -27,9 +27,19 @@ void main() {
   group('TransactionProvider - Initial Data', () {
     test('loadInitialData loads categories correctly', () async {
       when(mockDb.getCategories()).thenAnswer((_) async => [
-        Category(id: 1, name: 'Ăn uống', type: 'expense', icon: '🍔', color: 0xFFFFB6B6),
-        Category(id: 8, name: 'Lương', type: 'income', icon: '💰', color: 0xFF4CAF50),
-      ]);
+            Category(
+                id: 1,
+                name: 'Ăn uống',
+                type: 'expense',
+                icon: '🍔',
+                color: 0xFFFFB6B6),
+            Category(
+                id: 8,
+                name: 'Lương',
+                type: 'income',
+                icon: '💰',
+                color: 0xFF4CAF50),
+          ]);
 
       await provider.loadInitialData();
 
@@ -42,7 +52,8 @@ void main() {
   });
 
   group('TransactionProvider - Transactions CRUD', () {
-    test('loadTransactions sets data and calculates totals correctly', () async {
+    test('loadTransactions sets data and calculates totals correctly',
+        () async {
       final transactions = [
         my_transaction.Transaction(
           userId: 1,
@@ -83,7 +94,8 @@ void main() {
       );
 
       when(mockDb.insertTransaction(any)).thenAnswer((_) async => 15);
-      when(mockDb.getTransactions(1)).thenAnswer((_) async => [newTransaction..id = 15]);
+      when(mockDb.getTransactions(1))
+          .thenAnswer((_) async => [newTransaction..id = 15]);
 
       await provider.addTransaction(newTransaction);
 
@@ -103,7 +115,8 @@ void main() {
       );
 
       when(mockDb.updateTransaction(any)).thenAnswer((_) async => 1);
-      when(mockDb.getTransactions(1)).thenAnswer((_) async => [updatedTransaction]);
+      when(mockDb.getTransactions(1))
+          .thenAnswer((_) async => [updatedTransaction]);
 
       await provider.updateTransaction(updatedTransaction);
 
@@ -165,11 +178,22 @@ void main() {
   });
 
   group('TransactionProvider - Category Analysis', () {
-    test('getCategoryAnalysis returns correct totals by category name', () async {
+    test('getCategoryAnalysis returns correct totals by category name',
+        () async {
       when(mockDb.getCategories()).thenAnswer((_) async => [
-        Category(id: 1, name: 'Ăn uống', type: 'expense', icon: '🍔', color: 0xFFFFB6B6),
-        Category(id: 2, name: 'Di chuyển', type: 'expense', icon: '🚗', color: 0xFFA7C5EB),
-      ]);
+            Category(
+                id: 1,
+                name: 'Ăn uống',
+                type: 'expense',
+                icon: '🍔',
+                color: 0xFFFFB6B6),
+            Category(
+                id: 2,
+                name: 'Di chuyển',
+                type: 'expense',
+                icon: '🚗',
+                color: 0xFFA7C5EB),
+          ]);
       await provider.loadInitialData();
 
       final transactions = [

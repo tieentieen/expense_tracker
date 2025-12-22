@@ -14,9 +14,9 @@ import 'package:expense_tracker/utils/formatters.dart';
 
 class HomeScreen extends StatefulWidget {
   final int userId;
-  
+
   const HomeScreen({super.key, required this.userId});
-  
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -26,9 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final _searchController = TextEditingController();
   String _selectedTimeFilter = 'month';
   String? _selectedCategoryFilter;
-  
+
   final List<String> _timeFilters = ['today', 'week', 'month', 'year', 'all'];
-  
+
   final Map<String, String> _timeFilterLabels = {
     'today': 'Hôm nay',
     'week': 'Tuần này',
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     'year': 'Năm nay',
     'all': 'Tất cả',
   };
-  
+
   @override
   void initState() {
     super.initState();
@@ -44,19 +44,19 @@ class _HomeScreenState extends State<HomeScreen> {
       _loadData();
     });
   }
-  
+
   void _loadData() {
-    final transactionProvider = Provider.of<TransactionProvider>(context, listen: false);
+    final transactionProvider =
+        Provider.of<TransactionProvider>(context, listen: false);
     transactionProvider.loadInitialData();
     transactionProvider.loadTransactions(widget.userId);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final transactionProvider = Provider.of<TransactionProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
-    
 
     final List<Widget> screens = [
       _buildHomeTab(transactionProvider, authProvider, themeProvider),
@@ -67,17 +67,16 @@ class _HomeScreenState extends State<HomeScreen> {
         userEmail: authProvider.currentUserEmail ?? '',
       ),
     ];
-    
+
     return Scaffold(
       body: screens[_currentIndex],
       bottomNavigationBar: _buildBottomNavBar(themeProvider),
-      floatingActionButton: _currentIndex == 0 
-          ? _buildFloatingActionButton()
-          : null,
+      floatingActionButton:
+          _currentIndex == 0 ? _buildFloatingActionButton() : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
-  
+
   Widget _buildHomeTab(
     TransactionProvider provider,
     AuthProvider authProvider,
@@ -86,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final now = DateTime.now();
     final monthYear = Formatters.formatMonthYear(now);
     final userName = authProvider.currentUserName?.split(' ').first ?? 'Bạn';
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Column(
@@ -153,13 +152,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Có thể thêm hành động khi tap vào balance card
                 },
               ),
-              
+
               // Time Filter Chips
               _buildTimeFilterChips(),
-              
+
               // Quick Stats
               _buildQuickStats(provider),
-              
+
               // Recent Transactions Header
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
@@ -184,12 +183,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              
+
               // Transactions List
               provider.transactions.isEmpty
                   ? _buildEmptyState()
                   : _buildTransactionList(provider),
-              
+
               const SizedBox(height: 80),
             ],
           ),
@@ -197,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
+
   Widget _buildTimeFilterChips() {
     return Container(
       height: 60,
@@ -212,16 +211,18 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ChoiceChip(
               label: Text(_timeFilterLabels[filter]!),
               selected: _selectedTimeFilter == filter,
-              selectedColor: AppColors.primaryLight.withAlpha((0.3 * 255).round()),
-                  onSelected: (_) {
-                    setState(() {
-                      _selectedTimeFilter = filter;
-                    });
-                    // Update provider after state change to avoid calling
-                    // notifyListeners during the widget build phase.
-                    final provider = Provider.of<TransactionProvider>(context, listen: false);
-                    provider.setTimeFilter(filter);
-                  },
+              selectedColor:
+                  AppColors.primaryLight.withAlpha((0.3 * 255).round()),
+              onSelected: (_) {
+                setState(() {
+                  _selectedTimeFilter = filter;
+                });
+                // Update provider after state change to avoid calling
+                // notifyListeners during the widget build phase.
+                final provider =
+                    Provider.of<TransactionProvider>(context, listen: false);
+                provider.setTimeFilter(filter);
+              },
               labelStyle: TextStyle(
                 color: _selectedTimeFilter == filter
                     ? AppColors.primaryLight
@@ -237,13 +238,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-    Widget _buildQuickStats(TransactionProvider provider) {
+  Widget _buildQuickStats(TransactionProvider provider) {
     final categoryData = provider.getCategoryAnalysis('expense');
-    final topCategories = categoryData.entries
-        .toList()
-        ..sort((a, b) => b.value.compareTo(a.value))
-        ..take(3).toList();
-    
+    final topCategories = categoryData.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value))
+      ..take(3).toList();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Card(
@@ -265,16 +265,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              
+
               if (topCategories.isEmpty)
                 _buildNoDataMessage('Chưa có chi tiêu nào')
               else
                 Column(
                   children: topCategories.map((entry) {
-                    final percentage = provider.totalExpense > 0 
-                        ? (entry.value / provider.totalExpense * 100).toStringAsFixed(1)
+                    final percentage = provider.totalExpense > 0
+                        ? (entry.value / provider.totalExpense * 100)
+                            .toStringAsFixed(1)
                         : '0.0';
-                    
+
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 8),
                       child: Row(
@@ -284,8 +285,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 12,
                             decoration: BoxDecoration(
                               color: AppColors.categoryColors[
-                                  topCategories.indexOf(entry) % 
-                                  AppColors.categoryColors.length],
+                                  topCategories.indexOf(entry) %
+                                      AppColors.categoryColors.length],
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -293,7 +294,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           Expanded(
                             child: Text(
                               entry.key,
-                              style: const TextStyle(fontWeight: FontWeight.w500),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w500),
                             ),
                           ),
                           Text(
@@ -313,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }).toList(),
                 ),
-              
+
               // View all categories button
               if (topCategories.isNotEmpty)
                 Padding(
@@ -344,11 +346,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
+
   Widget _buildTransactionList(TransactionProvider provider) {
     // Nhóm giao dịch theo ngày
     final Map<String, List<Transaction>> groupedTransactions = {};
-    
+
     for (final transaction in provider.transactions) {
       final dateKey = Formatters.formatDate(transaction.date);
       if (!groupedTransactions.containsKey(dateKey)) {
@@ -356,18 +358,18 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       groupedTransactions[dateKey]!.add(transaction);
     }
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: groupedTransactions.entries.map((entry) {
-      final expenseForDay = entry.value
+          final expenseForDay = entry.value
               .where((t) => t.type == 'expense')
               .fold(0.0, (sum, t) => sum + t.amount);
           final incomeForDay = entry.value
               .where((t) => t.type == 'income')
               .fold(0.0, (sum, t) => sum + t.amount);
-          
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -395,7 +397,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         if (incomeForDay > 0 && expenseForDay > 0)
-                          const Text(' • ', style: TextStyle(color: Colors.grey)),
+                          const Text(' • ',
+                              style: TextStyle(color: Colors.grey)),
                         if (expenseForDay > 0)
                           Text(
                             '-${Formatters.formatCurrency(expenseForDay)}',
@@ -427,7 +430,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
+
   Widget _buildEmptyState() {
     return Container(
       height: 300,
@@ -476,7 +479,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
+
   Widget _buildNoDataMessage(String message) {
     return Center(
       child: Padding(
@@ -501,14 +504,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
+
   BottomNavigationBar _buildBottomNavBar(ThemeProvider themeProvider) {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
       onTap: (index) => setState(() => _currentIndex = index),
-      backgroundColor: themeProvider.isDarkMode
-          ? AppColors.surfaceDark
-          : Colors.white,
+      backgroundColor:
+          themeProvider.isDarkMode ? AppColors.surfaceDark : Colors.white,
       selectedItemColor: AppColors.primaryLight,
       unselectedItemColor: Colors.grey,
       selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -533,7 +535,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
-  
+
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: _addTransaction,
@@ -547,7 +549,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: const Icon(Icons.add, size: 30),
     );
   }
-  
+
   void _addTransaction() {
     Navigator.push(
       context,
@@ -558,7 +560,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _loadData();
     });
   }
-  
+
   void _editTransaction(Transaction transaction) {
     Navigator.push(
       context,
@@ -572,7 +574,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _loadData();
     });
   }
-  
+
   Future<void> _deleteTransaction(
     int transactionId,
     TransactionProvider provider,
@@ -600,7 +602,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
-    
+
     if (confirmed == true) {
       try {
         await provider.deleteTransaction(transactionId, widget.userId);
@@ -620,7 +622,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
-  
+
   void _showSearchDialog() {
     showDialog(
       context: context,
@@ -635,7 +637,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           autofocus: true,
           onChanged: (value) {
-            final provider = Provider.of<TransactionProvider>(context, listen: false);
+            final provider =
+                Provider.of<TransactionProvider>(context, listen: false);
             provider.setSearchKeyword(value);
           },
         ),
@@ -643,7 +646,8 @@ class _HomeScreenState extends State<HomeScreen> {
           TextButton(
             onPressed: () {
               _searchController.clear();
-              final provider = Provider.of<TransactionProvider>(context, listen: false);
+              final provider =
+                  Provider.of<TransactionProvider>(context, listen: false);
               provider.setSearchKeyword('');
               Navigator.pop(context);
             },
@@ -659,13 +663,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
+
   void _showFilterDialog() {
     final provider = Provider.of<TransactionProvider>(context, listen: false);
     final categories = provider.getCategoryAnalysis('expense').keys.toList();
-    final incomeCategories = provider.getCategoryAnalysis('income').keys.toList();
+    final incomeCategories =
+        provider.getCategoryAnalysis('income').keys.toList();
     final allCategories = [...categories, ...incomeCategories];
-    
+
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
@@ -707,7 +712,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ChoiceChip(
                         label: const Row(
                           children: [
-                            Icon(Icons.arrow_upward, size: 14, color: AppColors.incomeColor),
+                            Icon(Icons.arrow_upward,
+                                size: 14, color: AppColors.incomeColor),
                             SizedBox(width: 4),
                             Text('Thu nhập'),
                           ],
@@ -723,7 +729,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ChoiceChip(
                         label: const Row(
                           children: [
-                            Icon(Icons.arrow_downward, size: 14, color: AppColors.expenseColor),
+                            Icon(Icons.arrow_downward,
+                                size: 14, color: AppColors.expenseColor),
                             SizedBox(width: 4),
                             Text('Chi tiêu'),
                           ],
@@ -738,7 +745,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Filter by category
                   const Text(
                     'Danh mục cụ thể:',

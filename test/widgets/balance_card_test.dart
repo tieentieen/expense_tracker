@@ -6,7 +6,8 @@ import 'package:expense_tracker/utils/formatters.dart';
 
 void main() {
   group('BalanceCard Widget Tests', () {
-    testWidgets('renders positive balance correctly', (WidgetTester tester) async {
+    testWidgets('renders positive balance correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -29,7 +30,8 @@ void main() {
       expect(find.byIcon(Icons.arrow_upward), findsNWidgets(2));
     });
 
-    testWidgets('renders negative balance correctly', (WidgetTester tester) async {
+    testWidgets('renders negative balance correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -66,7 +68,7 @@ void main() {
 
     testWidgets('responds to onTap callback', (WidgetTester tester) async {
       bool tapped = false;
-      
+
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -84,7 +86,8 @@ void main() {
       expect(tapped, true);
     });
 
-    testWidgets('handles very large numbers with ellipsis', (WidgetTester tester) async {
+    testWidgets('handles very large numbers with ellipsis',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -103,7 +106,8 @@ void main() {
       expect(find.text('Chi tiêu'), findsOneWidget);
     });
 
-    testWidgets('uses correct colors for positive balance', (WidgetTester tester) async {
+    testWidgets('uses correct colors for positive balance',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -119,12 +123,13 @@ void main() {
       final container = tester.widget<Container>(find.byType(Container).first);
       final decoration = container.decoration as BoxDecoration;
       final gradient = decoration.gradient as LinearGradient;
-      
+
       // Positive balance should use green gradient
       expect(gradient.colors.length, 2);
     });
 
-    testWidgets('uses correct colors for negative balance', (WidgetTester tester) async {
+    testWidgets('uses correct colors for negative balance',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -140,7 +145,7 @@ void main() {
       final container = tester.widget<Container>(find.byType(Container).first);
       final decoration = container.decoration as BoxDecoration;
       final gradient = decoration.gradient as LinearGradient;
-      
+
       // Negative balance should use red gradient
       expect(gradient.colors.length, 2);
     });

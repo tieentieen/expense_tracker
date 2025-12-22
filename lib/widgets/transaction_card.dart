@@ -40,7 +40,7 @@ class TransactionCard extends StatelessWidget {
       category = CategoryRepository.getCategoryById(transaction.categoryId);
     }
     final isIncome = transaction.type == 'income';
-    
+
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       elevation: 1,
@@ -74,7 +74,7 @@ class TransactionCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              
+
               // Transaction Details
               Expanded(
                 child: Column(
@@ -109,7 +109,7 @@ class TransactionCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 4),
-                    
+
                     // Category and Date
                     Row(
                       children: [
@@ -120,7 +120,8 @@ class TransactionCard extends StatelessWidget {
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: Color(category.color).withAlpha((0.1 * 255).round()),
+                              color: Color(category.color)
+                                  .withAlpha((0.1 * 255).round()),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -134,7 +135,6 @@ class TransactionCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 8),
                         ],
-                        
                         if (showDate) ...[
                           const Icon(
                             Icons.calendar_today,
@@ -150,7 +150,6 @@ class TransactionCard extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          
                           const Icon(
                             Icons.access_time,
                             size: 12,
@@ -167,9 +166,10 @@ class TransactionCard extends StatelessWidget {
                         ],
                       ],
                     ),
-                    
+
                     // Note (if exists)
-                    if (transaction.note != null && transaction.note!.isNotEmpty)
+                    if (transaction.note != null &&
+                        transaction.note!.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(top: 4),
                         child: Text(
@@ -186,7 +186,7 @@ class TransactionCard extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Action buttons
               if (onDelete != null) ...[
                 const SizedBox(width: 8),
@@ -242,7 +242,7 @@ class CompactTransactionCard extends StatelessWidget {
       category = CategoryRepository.getCategoryById(transaction.categoryId);
     }
     final isIncome = transaction.type == 'income';
-    
+
     return Card(
       margin: const EdgeInsets.only(bottom: 4),
       elevation: 0,
@@ -272,7 +272,7 @@ class CompactTransactionCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              
+
               // Details
               Expanded(
                 child: Column(
@@ -299,16 +299,15 @@ class CompactTransactionCard extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Amount
               Text(
                 Formatters.formatCurrency(transaction.amount),
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: isIncome
-                      ? AppColors.incomeColor
-                      : AppColors.expenseColor,
+                  color:
+                      isIncome ? AppColors.incomeColor : AppColors.expenseColor,
                 ),
               ),
             ],

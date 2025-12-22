@@ -45,7 +45,7 @@ void main() {
       expect(map['id'], 10);
       expect(map['user_id'], 1);
       expect(map['title'], 'Ăn trưa');
-      expect(map['amount'], 150000); 
+      expect(map['amount'], 150000);
       expect(map['type'], 'expense');
     });
 

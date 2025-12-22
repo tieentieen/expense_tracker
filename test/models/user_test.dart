@@ -51,7 +51,7 @@ void main() {
 
       expect(updated.email, 'new@email.com');
       expect(updated.name, 'New Name');
-      expect(updated.password, 'oldpass'); 
+      expect(updated.password, 'oldpass');
     });
   });
 }

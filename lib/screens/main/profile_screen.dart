@@ -10,14 +10,14 @@ class ProfileScreen extends StatefulWidget {
   final int userId;
   final String userName;
   final String userEmail;
-  
+
   const ProfileScreen({
     super.key,
     required this.userId,
     required this.userName,
     required this.userEmail,
   });
-  
+
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -27,13 +27,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _currentPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
+
   @override
   void initState() {
     super.initState();
     _nameController.text = widget.userName;
   }
-  
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -42,12 +42,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _confirmPasswordController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tài Khoản Cá Nhân'),
@@ -69,23 +69,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // Profile Card
             _buildProfileCard(authProvider),
             const SizedBox(height: 24),
-            
+
             // Personal Info
             _buildPersonalInfoSection(),
             const SizedBox(height: 24),
-            
+
             // Security
             _buildSecuritySection(authProvider),
             const SizedBox(height: 24),
-            
+
             // Appearance
             _buildAppearanceSection(themeProvider),
             const SizedBox(height: 24),
-            
+
             // Support
             _buildSupportSection(),
             const SizedBox(height: 24),
-            
+
             // Logout button
             _buildLogoutButton(authProvider),
             const SizedBox(height: 40),
@@ -94,7 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   Widget _buildProfileCard(AuthProvider authProvider) {
     return Card(
       elevation: 4,
@@ -124,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(width: 20),
-            
+
             // User info
             Expanded(
               child: Column(
@@ -156,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            
+
             // Edit button
             IconButton(
               icon: const Icon(Icons.edit_outlined),
@@ -169,7 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   Widget _buildPersonalInfoSection() {
     return Card(
       elevation: 3,
@@ -190,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // Name
             _buildInfoRow(
               Icons.person_outline,
@@ -198,7 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               widget.userName,
             ),
             const SizedBox(height: 12),
-            
+
             // Email
             _buildInfoRow(
               Icons.email_outlined,
@@ -206,7 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               widget.userEmail,
             ),
             const SizedBox(height: 12),
-            
+
             // Member since
             _buildInfoRow(
               Icons.calendar_today_outlined,
@@ -218,7 +218,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   Widget _buildSecuritySection(AuthProvider authProvider) {
     return Card(
       elevation: 3,
@@ -239,7 +239,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // Change password button
             SizedBox(
               width: double.infinity,
@@ -248,7 +248,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 icon: const Icon(Icons.lock_outline, size: 20),
                 label: const Text('Đổi mật khẩu'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryLight.withAlpha((0.1 * 255).round()),
+                  backgroundColor:
+                      AppColors.primaryLight.withAlpha((0.1 * 255).round()),
                   foregroundColor: AppColors.primaryLight,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
@@ -258,12 +259,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             // Privacy policy
             ListTile(
-              leading: const Icon(Icons.privacy_tip_outlined, color: Colors.grey),
+              leading:
+                  const Icon(Icons.privacy_tip_outlined, color: Colors.grey),
               title: const Text('Chính sách bảo mật'),
               trailing: const Icon(Icons.chevron_right, color: Colors.grey),
               onTap: () => _showPrivacyPolicy(),
@@ -274,7 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   Widget _buildAppearanceSection(ThemeProvider themeProvider) {
     return Card(
       elevation: 3,
@@ -295,10 +297,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // Theme toggle
             ListTile(
-              leading: const Icon(Icons.color_lens_outlined, color: Colors.grey),
+              leading:
+                  const Icon(Icons.color_lens_outlined, color: Colors.grey),
               title: const Text('Chế độ tối'),
               trailing: Switch(
                 value: themeProvider.isDarkMode,
@@ -307,7 +310,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               onTap: () => themeProvider.toggleTheme(),
             ),
-            
+
             // Language selector (optional)
             ListTile(
               leading: const Icon(Icons.language_outlined, color: Colors.grey),
@@ -327,7 +330,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   Widget _buildSupportSection() {
     return Card(
       elevation: 3,
@@ -348,7 +351,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // Help center
             ListTile(
               leading: const Icon(Icons.help_outline, color: Colors.grey),
@@ -357,16 +360,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onTap: () => _showHelpCenter(),
               contentPadding: EdgeInsets.zero,
             ),
-            
+
             // Contact support
             ListTile(
-              leading: const Icon(Icons.support_agent_outlined, color: Colors.grey),
+              leading:
+                  const Icon(Icons.support_agent_outlined, color: Colors.grey),
               title: const Text('Liên hệ hỗ trợ'),
               trailing: const Icon(Icons.chevron_right, color: Colors.grey),
               onTap: () => _contactSupport(),
               contentPadding: EdgeInsets.zero,
             ),
-            
+
             // About app
             ListTile(
               leading: const Icon(Icons.info_outline, color: Colors.grey),
@@ -380,7 +384,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   Widget _buildLogoutButton(AuthProvider authProvider) {
     return SizedBox(
       width: double.infinity,
@@ -400,7 +404,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   Widget _buildInfoRow(IconData icon, String title, String value) {
     return Row(
       children: [
@@ -431,7 +435,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ],
     );
   }
-  
+
   Future<void> _showEditProfileDialog(AuthProvider authProvider) async {
     await showDialog(
       context: context,
@@ -469,16 +473,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 );
                 return;
               }
-              
+
               final result = await authProvider.updateProfile(
                 name: _nameController.text.trim(),
                 avatarUrl: null,
               );
-              
+
               if (result['success'] == true) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(result['message'] ?? AppConstants.successUpdateProfile),
+                    content: Text(
+                        result['message'] ?? AppConstants.successUpdateProfile),
                     backgroundColor: AppColors.successColor,
                   ),
                 );
@@ -505,7 +510,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   Future<void> _showChangePasswordDialog(AuthProvider authProvider) async {
     await showDialog(
       context: context,
@@ -559,7 +564,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           ElevatedButton(
             onPressed: () async {
-              if (_newPasswordController.text != _confirmPasswordController.text) {
+              if (_newPasswordController.text !=
+                  _confirmPasswordController.text) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Mật khẩu mới không khớp'),
@@ -568,7 +574,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 );
                 return;
               }
-              
+
               if (_newPasswordController.text.length < 6) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -578,20 +584,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 );
                 return;
               }
-              
+
               final result = await authProvider.changePassword(
                 currentPassword: _currentPasswordController.text,
                 newPassword: _newPasswordController.text,
               );
-              
+
               if (result['success'] == true) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(result['message'] ?? AppConstants.successChangePassword),
+                    content: Text(result['message'] ??
+                        AppConstants.successChangePassword),
                     backgroundColor: AppColors.successColor,
                   ),
                 );
-                
+
                 _currentPasswordController.clear();
                 _newPasswordController.clear();
                 _confirmPasswordController.clear();
@@ -617,7 +624,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   Future<void> _showLogoutDialog(AuthProvider authProvider) async {
     await showDialog(
       context: context,
@@ -633,14 +640,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () async {
               await authProvider.logout();
               Navigator.pop(context);
-              
+
               // Điều hướng về màn hình login
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 '/login',
                 (route) => false,
               );
-              
+
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Đã đăng xuất thành công'),
@@ -660,7 +667,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   Future<void> _showSettingsDialog(ThemeProvider themeProvider) async {
     await showDialog(
       context: context,
@@ -696,7 +703,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   void _showPrivacyPolicy() {
     showDialog(
       context: context,
@@ -734,7 +741,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   void _showLanguageDialog() {
     showDialog(
       context: context,
@@ -765,7 +772,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   void _showHelpCenter() {
     showDialog(
       context: context,
@@ -802,7 +809,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   void _contactSupport() {
     showDialog(
       context: context,
@@ -845,7 +852,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   void _showAboutDialog() {
     showDialog(
       context: context,
@@ -885,19 +892,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   void _showFAQ() {
     // Implement FAQ screen
   }
-  
+
   void _showTutorial() {
     // Implement tutorial
   }
-  
+
   void _showUserManual() {
     // Implement user manual
   }
-  
+
   void _copyToClipboard(String text) {
     // Implement copy to clipboard
     ScaffoldMessenger.of(context).showSnackBar(
@@ -907,7 +914,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   void _clearCache() {
     showDialog(
       context: context,
@@ -935,13 +942,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   void _clearAppData() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Xóa dữ liệu ứng dụng'),
-        content: const Text('Hành động này sẽ xóa tất cả dữ liệu của bạn. Bạn có chắc chắn?'),
+        content: const Text(
+            'Hành động này sẽ xóa tất cả dữ liệu của bạn. Bạn có chắc chắn?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

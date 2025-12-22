@@ -19,9 +19,9 @@ void main() {
     // Tạo database in-memory
     inMemoryDb = await databaseFactory.openDatabase(inMemoryDatabasePath);
 
-  // Inject database in-memory vào DatabaseHelper singleton
-  dbHelper = DatabaseHelper();
-  await dbHelper.setDatabaseForTest(inMemoryDb);
+    // Inject database in-memory vào DatabaseHelper singleton
+    dbHelper = DatabaseHelper();
+    await dbHelper.setDatabaseForTest(inMemoryDb);
 
     // Tạo bảng và insert sample categories
     await dbHelper.database; // trigger _onCreate
@@ -46,10 +46,12 @@ void main() {
       expect(user.name, 'Nguyễn Test');
     });
 
-    test('authenticateUser returns user map when credentials correct', () async {
+    test('authenticateUser returns user map when credentials correct',
+        () async {
       await dbHelper.registerUser('auth@test.com', 'password123', 'Auth User');
 
-      final result = await dbHelper.authenticateUser('auth@test.com', 'password123');
+      final result =
+          await dbHelper.authenticateUser('auth@test.com', 'password123');
       expect(result, isNotNull);
       expect(result!['email'], 'auth@test.com');
     });
@@ -57,21 +59,25 @@ void main() {
     test('authenticateUser returns null when password wrong', () async {
       await dbHelper.registerUser('wrong@test.com', 'correctpass', 'User');
 
-      final result = await dbHelper.authenticateUser('wrong@test.com', 'wrongpass');
+      final result =
+          await dbHelper.authenticateUser('wrong@test.com', 'wrongpass');
       expect(result, isNull);
     });
 
     test('updateUserProfile and changePassword work correctly', () async {
-      final id = await dbHelper.registerUser('update@test.com', 'oldpass', 'Old Name');
+      final id =
+          await dbHelper.registerUser('update@test.com', 'oldpass', 'Old Name');
 
-      await dbHelper.updateUserProfile(id, 'New Name', 'https://avatar.com/new.jpg');
+      await dbHelper.updateUserProfile(
+          id, 'New Name', 'https://avatar.com/new.jpg');
       await dbHelper.changePassword(id, 'newpass123');
 
       final user = await dbHelper.getUserById(id);
       expect(user!.name, 'New Name');
       expect(user.avatarUrl, 'https://avatar.com/new.jpg');
 
-      final auth = await dbHelper.authenticateUser('update@test.com', 'newpass123');
+      final auth =
+          await dbHelper.authenticateUser('update@test.com', 'newpass123');
       expect(auth, isNotNull);
     });
   });
@@ -104,10 +110,13 @@ void main() {
     late int userId;
 
     setUp(() async {
-      userId = await dbHelper.registerUser('trans@test.com', 'pass', 'Trans User');
+      userId =
+          await dbHelper.registerUser('trans@test.com', 'pass', 'Trans User');
     });
 
-    test('insertTransaction, getTransactions, updateTransaction, deleteTransaction full flow', () async {
+    test(
+        'insertTransaction, getTransactions, updateTransaction, deleteTransaction full flow',
+        () async {
       final transaction = Transaction(
         userId: userId,
         title: 'Cơm trưa',
@@ -170,7 +179,8 @@ void main() {
       await dbHelper.insertTransaction(trans1);
       await dbHelper.insertTransaction(trans2);
 
-      final onlyExpense = await dbHelper.getTransactions(userId, type: 'expense');
+      final onlyExpense =
+          await dbHelper.getTransactions(userId, type: 'expense');
       expect(onlyExpense.length, 1);
       expect(onlyExpense.first.title, 'Cafe');
 
@@ -188,7 +198,8 @@ void main() {
     late int userId;
 
     setUp(() async {
-      userId = await dbHelper.registerUser('stats@test.com', 'pass', 'Stats User');
+      userId =
+          await dbHelper.registerUser('stats@test.com', 'pass', 'Stats User');
 
       final income = Transaction(
         userId: userId,
@@ -231,7 +242,8 @@ void main() {
     });
 
     test('getCategoryStats groups by category name correctly', () async {
-      final stats = await dbHelper.getCategoryStats(userId, 'expense', null, null);
+      final stats =
+          await dbHelper.getCategoryStats(userId, 'expense', null, null);
 
       expect(stats.length, 2);
       expect(stats['Ăn uống'], 500000);

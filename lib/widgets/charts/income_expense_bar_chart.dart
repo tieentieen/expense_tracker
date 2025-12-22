@@ -16,15 +16,18 @@ class IncomeExpenseBarChart extends StatelessWidget {
     this.year = 2024,
     this.showLegend = true,
   }) : assert(
-          monthlyData == null || (monthlyIncome.isEmpty && monthlyExpense.isEmpty),
+          monthlyData == null ||
+              (monthlyIncome.isEmpty && monthlyExpense.isEmpty),
           'Chỉ sử dụng monthlyData hoặc monthlyIncome/monthlyExpense',
         );
 
   @override
   Widget build(BuildContext context) {
-    final incomeData = monthlyIncome.isNotEmpty ? monthlyIncome : List.filled(12, 0.0);
-    final expenseData = monthlyExpense.isNotEmpty ? monthlyExpense : List.filled(12, 0.0);
-    
+    final incomeData =
+        monthlyIncome.isNotEmpty ? monthlyIncome : List.filled(12, 0.0);
+    final expenseData =
+        monthlyExpense.isNotEmpty ? monthlyExpense : List.filled(12, 0.0);
+
     if (_isEmpty(incomeData) && _isEmpty(expenseData)) {
       return _buildEmptyChart();
     }
@@ -44,7 +47,7 @@ class IncomeExpenseBarChart extends StatelessWidget {
                     final month = _getMonthName(groupIndex);
                     final value = Formatters.formatCurrency(rod.toY);
                     final type = rodIndex == 0 ? 'Thu' : 'Chi';
-                    
+
                     return BarTooltipItem(
                       '$month\n$type: $value',
                       const TextStyle(
@@ -122,7 +125,6 @@ class IncomeExpenseBarChart extends StatelessWidget {
             ),
           ),
         ),
-        
         if (showLegend) ...[
           const SizedBox(height: 16),
           _buildLegend(),
@@ -131,7 +133,8 @@ class IncomeExpenseBarChart extends StatelessWidget {
     );
   }
 
-  List<BarChartGroupData> _createBarGroups(List<double> income, List<double> expense) {
+  List<BarChartGroupData> _createBarGroups(
+      List<double> income, List<double> expense) {
     return List.generate(12, (index) {
       return BarChartGroupData(
         x: index,
@@ -156,8 +159,10 @@ class IncomeExpenseBarChart extends StatelessWidget {
   }
 
   double _getMaxValue(List<double> income, List<double> expense) {
-    final maxIncome = income.isNotEmpty ? income.reduce((a, b) => a > b ? a : b) : 0;
-    final maxExpense = expense.isNotEmpty ? expense.reduce((a, b) => a > b ? a : b) : 0;
+    final maxIncome =
+        income.isNotEmpty ? income.reduce((a, b) => a > b ? a : b) : 0;
+    final maxExpense =
+        expense.isNotEmpty ? expense.reduce((a, b) => a > b ? a : b) : 0;
     return (maxIncome > maxExpense ? maxIncome : maxExpense) * 1.1;
   }
 
@@ -167,14 +172,37 @@ class IncomeExpenseBarChart extends StatelessWidget {
 
   String _getMonthName(int monthIndex) {
     final months = [
-      'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-      'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+      'Tháng 1',
+      'Tháng 2',
+      'Tháng 3',
+      'Tháng 4',
+      'Tháng 5',
+      'Tháng 6',
+      'Tháng 7',
+      'Tháng 8',
+      'Tháng 9',
+      'Tháng 10',
+      'Tháng 11',
+      'Tháng 12'
     ];
     return months[monthIndex];
   }
 
   String _getMonthAbbreviation(int monthIndex) {
-    final months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+    final months = [
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      '11',
+      '12'
+    ];
     return months[monthIndex];
   }
 
@@ -204,7 +232,7 @@ class IncomeExpenseBarChart extends StatelessWidget {
           ],
         ),
         const SizedBox(width: 16),
-        
+
         // Expense legend
         Row(
           children: [
@@ -315,7 +343,7 @@ class SimpleBarChart extends StatelessWidget {
                   getTooltipItem: (group, groupIndex, rod, rodIndex) {
                     final month = _getMonthName(groupIndex);
                     final value = Formatters.formatCurrency(rod.toY);
-                    
+
                     return BarTooltipItem(
                       '$month: $value',
                       const TextStyle(
@@ -395,14 +423,37 @@ class SimpleBarChart extends StatelessWidget {
 
   String _getMonthName(int monthIndex) {
     final months = [
-      'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-      'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+      'Tháng 1',
+      'Tháng 2',
+      'Tháng 3',
+      'Tháng 4',
+      'Tháng 5',
+      'Tháng 6',
+      'Tháng 7',
+      'Tháng 8',
+      'Tháng 9',
+      'Tháng 10',
+      'Tháng 11',
+      'Tháng 12'
     ];
     return months[monthIndex];
   }
 
   String _getMonthAbbreviation(int monthIndex) {
-    final months = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'];
+    final months = [
+      'T1',
+      'T2',
+      'T3',
+      'T4',
+      'T5',
+      'T6',
+      'T7',
+      'T8',
+      'T9',
+      'T10',
+      'T11',
+      'T12'
+    ];
     return months[monthIndex];
   }
 

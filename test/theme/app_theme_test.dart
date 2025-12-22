@@ -8,7 +8,7 @@ void main() {
   group('AppTheme Tests', () {
     test('lightTheme should have correct base properties', () {
       final theme = AppTheme.lightTheme;
-      
+
       expect(theme.useMaterial3, isTrue);
       expect(theme.scaffoldBackgroundColor, AppColors.backgroundLight);
       expect(theme.colorScheme.primary, AppColors.primaryLight);
@@ -19,7 +19,7 @@ void main() {
 
     test('darkTheme should have correct base properties', () {
       final theme = AppTheme.darkTheme;
-      
+
       expect(theme.useMaterial3, isTrue);
       expect(theme.scaffoldBackgroundColor, AppColors.backgroundDark);
       expect(theme.colorScheme.primary, AppColors.primaryDark);
@@ -28,7 +28,8 @@ void main() {
       expect(theme.colorScheme.error, AppColors.errorDark);
     });
 
-    testWidgets('lightTheme app bar should render correctly', (WidgetTester tester) async {
+    testWidgets('lightTheme app bar should render correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.lightTheme,
@@ -44,7 +45,8 @@ void main() {
       expect(find.text('Test AppBar'), findsOneWidget);
     });
 
-    testWidgets('lightTheme elevated button should render correctly', (WidgetTester tester) async {
+    testWidgets('lightTheme elevated button should render correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.lightTheme,
@@ -61,7 +63,8 @@ void main() {
       expect(find.byType(ElevatedButton), findsOneWidget);
     });
 
-    testWidgets('lightTheme input decoration should render correctly', (WidgetTester tester) async {
+    testWidgets('lightTheme input decoration should render correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.lightTheme,
@@ -78,7 +81,8 @@ void main() {
       expect(find.byType(TextField), findsOneWidget);
     });
 
-    testWidgets('lightTheme card should render with theme', (WidgetTester tester) async {
+    testWidgets('lightTheme card should render with theme',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.lightTheme,
@@ -97,7 +101,8 @@ void main() {
       expect(find.byType(Card), findsOneWidget);
     });
 
-    testWidgets('lightTheme chip should render correctly', (WidgetTester tester) async {
+    testWidgets('lightTheme chip should render correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.lightTheme,
@@ -113,7 +118,8 @@ void main() {
       expect(find.byType(Chip), findsOneWidget);
     });
 
-    testWidgets('lightTheme bottom navigation bar should render correctly', (WidgetTester tester) async {
+    testWidgets('lightTheme bottom navigation bar should render correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.lightTheme,
@@ -140,7 +146,8 @@ void main() {
       expect(find.byType(BottomNavigationBar), findsOneWidget);
     });
 
-    testWidgets('lightTheme floating action button should render correctly', (WidgetTester tester) async {
+    testWidgets('lightTheme floating action button should render correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.lightTheme,
@@ -157,7 +164,8 @@ void main() {
       expect(find.byIcon(Icons.add), findsOneWidget);
     });
 
-    testWidgets('darkTheme app bar should render correctly', (WidgetTester tester) async {
+    testWidgets('darkTheme app bar should render correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.darkTheme,
@@ -172,7 +180,8 @@ void main() {
       expect(find.text('Test AppBar'), findsOneWidget);
     });
 
-    testWidgets('darkTheme bottom navigation bar should render correctly', (WidgetTester tester) async {
+    testWidgets('darkTheme bottom navigation bar should render correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.darkTheme,
@@ -199,20 +208,25 @@ void main() {
       expect(find.byType(BottomNavigationBar), findsOneWidget);
     });
 
-    test('ThemeData instances should have different colors for light and dark themes', () {
+    test(
+        'ThemeData instances should have different colors for light and dark themes',
+        () {
       final lightTheme = AppTheme.lightTheme;
       final darkTheme = AppTheme.darkTheme;
-      
+
       expect(lightTheme.scaffoldBackgroundColor, AppColors.backgroundLight);
       expect(darkTheme.scaffoldBackgroundColor, AppColors.backgroundDark);
-      expect(lightTheme.scaffoldBackgroundColor, isNot(equals(darkTheme.scaffoldBackgroundColor)));
-      
+      expect(lightTheme.scaffoldBackgroundColor,
+          isNot(equals(darkTheme.scaffoldBackgroundColor)));
+
       expect(lightTheme.colorScheme.primary, AppColors.primaryLight);
       expect(darkTheme.colorScheme.primary, AppColors.primaryDark);
-      expect(lightTheme.colorScheme.primary, isNot(equals(darkTheme.colorScheme.primary)));
+      expect(lightTheme.colorScheme.primary,
+          isNot(equals(darkTheme.colorScheme.primary)));
     });
 
-    testWidgets('Theme should apply to all Material widgets', (WidgetTester tester) async {
+    testWidgets('Theme should apply to all Material widgets',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.lightTheme,
@@ -226,7 +240,9 @@ void main() {
                     child: Column(
                       children: [
                         const Text('Title'),
-                        const TextField(decoration: InputDecoration(hintText: 'Enter text')),
+                        const TextField(
+                            decoration:
+                                InputDecoration(hintText: 'Enter text')),
                         ElevatedButton(
                           onPressed: () {},
                           child: const Text('Submit'),
@@ -241,7 +257,8 @@ void main() {
             bottomNavigationBar: BottomNavigationBar(
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-                BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.search), label: 'Search'),
               ],
             ),
           ),
@@ -258,7 +275,8 @@ void main() {
       expect(find.text('Search'), findsOneWidget);
     });
 
-    testWidgets('Theme brightness should be correct for light theme', (WidgetTester tester) async {
+    testWidgets('Theme brightness should be correct for light theme',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.lightTheme,
@@ -273,7 +291,8 @@ void main() {
       );
     });
 
-    testWidgets('Theme brightness should be correct for dark theme', (WidgetTester tester) async {
+    testWidgets('Theme brightness should be correct for dark theme',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.darkTheme,
@@ -288,7 +307,9 @@ void main() {
       );
     });
 
-    testWidgets('Theme color scheme should be applied correctly for light theme', (WidgetTester tester) async {
+    testWidgets(
+        'Theme color scheme should be applied correctly for light theme',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.lightTheme,
@@ -304,7 +325,8 @@ void main() {
       );
     });
 
-    testWidgets('Theme color scheme should be applied correctly for dark theme', (WidgetTester tester) async {
+    testWidgets('Theme color scheme should be applied correctly for dark theme',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.darkTheme,

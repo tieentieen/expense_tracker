@@ -156,8 +156,10 @@ void main() {
           child: Builder(
             builder: (context) {
               // Access all providers to ensure they exist
-              final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-              final authProvider = Provider.of<AuthProvider>(context, listen: false);
+              final themeProvider =
+                  Provider.of<ThemeProvider>(context, listen: false);
+              final authProvider =
+                  Provider.of<AuthProvider>(context, listen: false);
               final transactionProvider =
                   Provider.of<TransactionProvider>(context, listen: false);
 
@@ -185,17 +187,18 @@ void main() {
           ],
           child: Builder(
             builder: (context) {
-              final provider = Provider.of<ThemeProvider>(context, listen: false);
-              
+              final provider =
+                  Provider.of<ThemeProvider>(context, listen: false);
+
               // Kiểm tra provider có themeMode property
               expect(provider.themeMode, isNotNull);
-              
+
               return Container();
             },
           ),
         ),
       );
-      
+
       expect(tester.takeException(), isNull);
     });
   });
@@ -241,7 +244,8 @@ void main() {
       expect(materialApp.onGenerateRoute, isNotNull);
     });
 
-    testWidgets('Edit transaction route can be generated', (WidgetTester tester) async {
+    testWidgets('Edit transaction route can be generated',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
@@ -254,7 +258,7 @@ void main() {
       );
 
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
-      
+
       // Test onGenerateRoute for edit transaction
       final routeSettings = RouteSettings(
         name: '/edit-transaction',
@@ -263,7 +267,7 @@ void main() {
           'isEditing': true,
         },
       );
-      
+
       final route = materialApp.onGenerateRoute!(routeSettings);
       expect(route, isNotNull);
       expect(route, isA<MaterialPageRoute>());
@@ -312,10 +316,10 @@ void main() {
       );
 
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
-      
+
       final routeSettings = RouteSettings(name: '/unknown-route');
       final route = materialApp.onGenerateRoute!(routeSettings);
-      
+
       expect(route, isNull);
     });
   });

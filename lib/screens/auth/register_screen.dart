@@ -7,7 +7,7 @@ import '../../utils/constants.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
-  
+
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -21,7 +21,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _agreeToTerms = false;
-  
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -30,11 +30,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _confirmPasswordController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Đăng Ký Tài Khoản'),
@@ -60,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
-  
+
   Widget _buildRegisterForm(AuthProvider authProvider) {
     return Card(
       elevation: 4,
@@ -90,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // Name field
               TextFormField(
                 controller: _nameController,
@@ -107,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 16),
-              
+
               // Email field
               TextFormField(
                 controller: _emailController,
@@ -125,7 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 16),
-              
+
               // Password field
               TextFormField(
                 controller: _passwordController,
@@ -135,7 +135,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                      _obscurePassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
                       color: Colors.grey,
                     ),
                     onPressed: () {
@@ -175,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // Confirm password field
               TextFormField(
                 controller: _confirmPasswordController,
@@ -185,7 +187,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscureConfirmPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                      _obscureConfirmPassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
                       color: Colors.grey,
                     ),
                     onPressed: () {
@@ -200,11 +204,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   filled: true,
                 ),
                 obscureText: _obscureConfirmPassword,
-                validator: (value) => Validators.validateConfirmPassword(value, _passwordController.text),
+                validator: (value) => Validators.validateConfirmPassword(
+                    value, _passwordController.text),
                 textInputAction: TextInputAction.done,
               ),
               const SizedBox(height: 16),
-              
+
               // Terms and conditions
               Row(
                 children: [
@@ -257,7 +262,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ],
               ),
               const SizedBox(height: 24),
-              
+
               // Register button
               SizedBox(
                 width: double.infinity,
@@ -267,7 +272,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ? null
                       : () => _handleRegister(authProvider),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: _agreeToTerms ? AppColors.primaryLight : Colors.grey,
+                    backgroundColor:
+                        _agreeToTerms ? AppColors.primaryLight : Colors.grey,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -293,7 +299,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // Already have account
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -322,7 +328,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
-  
+
   Future<void> _handleRegister(AuthProvider authProvider) async {
     if (_formKey.currentState!.validate()) {
       final result = await authProvider.register(
@@ -330,7 +336,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password: _passwordController.text,
         name: _nameController.text.trim(),
       );
-      
+
       if (result['success'] == true) {
         // Hiển thị thông báo thành công
         ScaffoldMessenger.of(context).showSnackBar(
@@ -340,7 +346,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             duration: const Duration(seconds: 3),
           ),
         );
-        
+
         // Sau 2 giây, quay lại màn hình login
         Future.delayed(const Duration(seconds: 2), () {
           if (mounted) {
@@ -359,7 +365,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     }
   }
-  
+
   Future<void> _showTermsDialog() async {
     await showDialog(
       context: context,
