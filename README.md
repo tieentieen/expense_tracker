@@ -87,11 +87,11 @@ Phân tích theo từng mức điểm:
     + Widget test: hầu hết các screen chính và component (Home, AddTransaction, Report, Profile, Login/Register, charts, cards...)
     + UI thân thiện: theme light/dark đẹp (pastel/kem), responsive cơ bản, icon, animation nhẹ, biểu đồ (fl_chart)
     + Có chức năng xác thực (login/register), cập nhật profile, đổi mật khẩu
-- 10/10: Tối ưu hóa, UI/UX mượt + CI/CD ổn định + tính năng nâng cao → Đạt phần lớn, nhưng chưa hoàn hảo
-    + CI/CD hoàn thiện: analyze, test, coverage, deploy web tự động
+- 10/10: Tối ưu hóa, UI/UX mượt + tính năng nâng cao → Đạt một phần, chưa hoàn hảo
     + UI/UX mượt mà: navigation (go_router), theme toggle, formatted currency VND, biểu đồ thống kê chi tiết
     + Tính năng nâng cao: filter/search giao dịch, báo cáo theo tháng/tuần/năm, export (mock), dark mode lưu trữ.
     + Không có cảnh báo nghiêm trọng trong analyze (chỉ một số warning được ignore có chủ đích)
-    + Duy nhất thiếu: chưa có tìm kiếm/sắp xếp nâng cao phức tạp hoặc animation phức tạp hơn, nhưng đã có filter khá tốt
+    + Thiếu: chưa có tìm kiếm/sắp xếp nâng cao phức tạp hoặc animation phức tạp hơn, nhưng đã có filter khá tốt
+    + CI/CD chưa ổn định
 
-## Kết luận tự đánh giá: 9.5/10
+## Kết luận tự đánh giá: 9/10
