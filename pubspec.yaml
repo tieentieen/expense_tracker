@@ -23,7 +23,7 @@ dependencies:
   path: ^1.9.0
   
   # Charts
-  fl_chart: ^0.70.0
+  fl_chart: ^0.68.0
   
   # Navigation
   go_router: ^13.1.0
