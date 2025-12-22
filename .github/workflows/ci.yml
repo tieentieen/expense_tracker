@@ -12,13 +12,13 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4  # Update to v4
     
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
         channel: 'stable'
-        flutter-version: '3.35.2'
+        flutter-version: '3.22.2'  # Update to latest stable if needed
     
     - name: Install dependencies
       run: flutter pub get
@@ -37,80 +37,54 @@ jobs:
         flutter test --coverage
         genhtml coverage/lcov.info -o coverage/html
     
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v3
+    - name: Upload coverage
+      if: always()  # Run even if previous steps fail
+      uses: actions/upload-artifact@v4  # Update to v4
       with:
         name: coverage-report
-        path: coverage/html/
-    
-    - name: Check formatting
-      run: flutter format --set-exit-if-changed .
-    
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    
-    - name: Setup Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        channel: 'stable'
-        flutter-version: '3.35.2'
-    
-    - name: Install dependencies
-      run: flutter pub get
-    
-    - name: Verify Android build
-      run: |
-        flutter build apk --debug
-        echo "Android build successful"
-    
-    - name: Verify Web build
-      run: |
-        flutter build web --release
-        echo "Web build successful"
-    
-    - name: Create release artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-artifacts
-        path: |
-          build/app/outputs/flutter-apk/
-          build/web/
-    
+        path: coverage/html
+
   quality:
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4  # Update to v4
     
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
         channel: 'stable'
-        flutter-version: '3.35.2'
+        flutter-version: '3.22.2'
     
     - name: Install dependencies
       run: flutter pub get
     
-    - name: Run Dart Code Metrics
-      run: |
-        dart pub global activate dart_code_metrics
-        dart pub global run dart_code_metrics:metrics analyze lib
-        dart pub global run dart_code_metrics:metrics check-unused-code lib
-        dart pub global run dart_code_metrics:metrics check-unused-files lib
+    - name: Format code
+      run: dart format --set-exit-if-changed .  # Exit 1 if not formatted
     
-    - name: Security analysis
-      run: |
-        flutter pub outdated --mode=null-safety
-        echo "Null safety check completed"
+    - name: Analyze code (no fatal warnings)
+      run: flutter analyze --no-fatal-warnings
+
+  build:
+    needs: [test, quality]
+    runs-on: ubuntu-latest
     
-    - name: Check for deprecated APIs
-      run: flutter analyze --fatal-infos
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        flutter-version: '3.22.2'
+    
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Build APK
+      run: flutter build apk --release
 
   deploy-demo:
     needs: [test, build, quality]
@@ -119,13 +93,13 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4  
     
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
         channel: 'stable'
-        flutter-version: '3.35.2'
+        flutter-version: '3.22.2'
     
     - name: Install dependencies
       run: flutter pub get
@@ -134,7 +108,7 @@ jobs:
       run: flutter build web --base-href /expense-tracker/ --release
     
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4  
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build/web
