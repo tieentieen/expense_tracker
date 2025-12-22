@@ -72,26 +72,31 @@ Phân tích theo từng mức điểm:
     + GitHub Actions đã được cấu hình hoàn chỉnh (file .github/workflows/ci.yml) 
     + Chạy thành công các bước: analyze, unit tests, widget tests, generate coverage, và deploy web lên GitHub Pages
     + Không có lỗi nào trong CI
+
 - 6/10: Kiểm thử CRUD cơ bản → Đạt 
     + Có đầy đủ CRUD cho đối tượng chính là Transaction (tạo, đọc danh sách, cập nhật, xóa)
     + Unit test và widget test kiểm tra các thao tác này (add_transaction_screen_test, transaction_provider_test, database_helper_test)
+
 - 7/10: Quản lý trạng thái + UI cơ bản → Đạt 
     + Sử dụng Provider để quản lý trạng thái (AuthProvider, TransactionProvider, ThemeProvider) → dữ liệu cập nhật realtime, không cần reload app
     + Giao diện cơ bản đầy đủ: danh sách giao dịch, chi tiết, form thêm/sửa, thông báo SnackBar thành công/thất bại rõ ràng
+
 - 8/10: Tích hợp CSDL cục bộ + xử lý lỗi → Đạt 
-    + Tích hợp sqflite (lưu trữ cục bộ SQLite) – tương đương yêu cầu “tích hợp CSDL”
+    + Tích hợp sqflite (lưu trữ cục bộ SQLite) 
     + Các thao tác CRUD liên kết trực tiếp với database
     + Xử lý lỗi tốt: validation form, try-catch trong provider/service, thông báo lỗi cụ thể qua SnackBar
+
 - 9/10: Kiểm thử tự động toàn diện + UI hoàn thiện → Đạt gần như hoàn chỉnh
     + Unit test: Unit test: model, provider, service, utils, database (in-memory)
     + Widget test: hầu hết các screen chính và component (Home, AddTransaction, Report, Profile, Login/Register, charts, cards...)
     + UI thân thiện: theme light/dark đẹp (pastel/kem), responsive cơ bản, icon, animation nhẹ, biểu đồ (fl_chart)
     + Có chức năng xác thực (login/register), cập nhật profile, đổi mật khẩu
+
 - 10/10: Tối ưu hóa, UI/UX mượt + tính năng nâng cao → Đạt một phần, chưa hoàn hảo
     + UI/UX mượt mà: navigation (go_router), theme toggle, formatted currency VND, biểu đồ thống kê chi tiết
-    + Tính năng nâng cao: filter/search giao dịch, báo cáo theo tháng/tuần/năm, export (mock), dark mode lưu trữ.
+    + Tính năng nâng cao: filter/search giao dịch, báo cáo theo tháng/tuần/năm, export (mock), dark mode lưu trữ
     + Không có cảnh báo nghiêm trọng trong analyze (chỉ một số warning được ignore có chủ đích)
-    + Thiếu: chưa có tìm kiếm/sắp xếp nâng cao phức tạp hoặc animation phức tạp hơn, nhưng đã có filter khá tốt
-    + CI/CD chưa ổn định
+    + Thiếu: chưa có sắp xếp/lọc nâng cao hoặc animation phức tạp hơn, nhưng đã có filter khá tốt
+    + CI/CD chưa ổn định, vẫn báo lỗi
 
 ## Kết luận tự đánh giá: 9/10
